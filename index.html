@@ -140,7 +140,16 @@ section{position:relative}
 .field input.err{border-color:#ff7b7b}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .billval{display:flex;justify-content:space-between;align-items:baseline}
-.billval output{font-size:30px;font-weight:600;letter-spacing:-.04em}
+.billval{gap:14px}
+.numbox{display:inline-flex;align-items:baseline;gap:6px;padding:4px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.22);background:rgba(8,8,79,.55);font-size:26px;font-weight:600;letter-spacing:-.03em;cursor:text;transition:border-color .25s,box-shadow .25s;margin:0!important;flex:none}
+.numbox:focus-within{border-color:var(--yellow);box-shadow:0 0 0 4px rgba(255,201,41,.15)}
+.numbox span{font-size:15px;font-weight:500;color:var(--muted)}
+.numbox input{width:6ch;min-width:3ch;border:0;background:transparent;color:#fff;font:inherit;text-align:right;outline:none;-moz-appearance:textfield;appearance:textfield}
+.numbox input::-webkit-outer-spin-button,.numbox input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.hint{margin-top:2px;font-size:12.5px;color:var(--muted)}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:14px}
+.mode{height:38px;border-radius:9px;border:1px solid rgba(255,255,255,.18);background:transparent;color:var(--muted);font-size:12.5px;font-weight:500;cursor:pointer;transition:background .25s,color .25s,border-color .25s}
+.mode.on{background:rgba(255,201,41,.14);border-color:var(--yellow);color:var(--cream);font-weight:600}
 .results{padding:30px;border-radius:18px;background:#fff;color:var(--ink);box-shadow:0 30px 80px rgba(0,0,40,.45)}
 .results h3{font-size:14px;font-weight:600;color:var(--muted-ink);letter-spacing:.02em}
 .hero-num{margin-top:4px;font-size:clamp(40px,5.4vw,60px);font-weight:600;letter-spacing:-.05em;line-height:1.05;background:linear-gradient(100deg,var(--navy),var(--navy-2) 40%,var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -312,6 +321,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   .steps{grid-template-columns:1fr}
   .row2{grid-template-columns:1fr}
   .tabs{grid-template-columns:1fr 1fr}
+  .billval{flex-wrap:wrap}
+  .mode{font-size:11.5px;padding:0 6px}
   .metrics{grid-template-columns:1fr 1fr}
   .bar{grid-template-columns:80px 1fr 78px}
   .panel,.results,.qcard{padding:22px}
@@ -515,9 +526,15 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
           <button class="tab" role="tab" aria-selected="false" data-type="rural">Rural</button>
           <button class="tab" role="tab" aria-selected="false" data-type="bomba">Bomba solar</button>
         </div>
+        <div class="modes" id="modes" role="group" aria-label="Como informar o consumo">
+          <button type="button" class="mode on" data-mode="brl" aria-pressed="true">Pelo valor da conta (R$)</button>
+          <button type="button" class="mode" data-mode="kwh" aria-pressed="false">Pelo consumo (kWh)</button>
+        </div>
         <div class="field">
-          <div class="billval"><label for="bill" id="billLabel" style="margin:0">Valor médio da sua conta de luz por mês</label><output id="billOut">R$ 600</output></div>
-          <input type="range" id="bill" min="100" max="5000" step="50" value="600">
+          <div class="billval"><label for="billNum" id="billLabel" style="margin:0">Valor médio da sua conta de luz por mês</label>
+            <label class="numbox"><span id="billPre">R$</span><input type="number" id="billNum" inputmode="numeric" min="0" max="99999" step="1" value="600" aria-describedby="billHint"><span id="billSuf"></span></label></div>
+          <input type="range" id="bill" min="100" max="5000" step="50" value="600" aria-label="Ajuste rápido do valor">
+          <p class="hint" id="billHint">≈ 630 kWh por mês</p>
         </div>
         <form id="leadForm" novalidate>
           <div class="field"><label for="nome">Seu nome</label><input type="text" id="nome" placeholder="Como podemos te chamar?" autocomplete="name"></div>
@@ -739,18 +756,29 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
     tween($("#qMonth"),r.mes,brl); tween($("#qYear"),r.ano,brl); tween($("#q25"),r.total25,brl);
   }
   qBill.addEventListener("input",updQuick);
-  $("#qGo").addEventListener("click",function(){
-    type="resid"; $$(".tab").forEach(function(x){x.setAttribute("aria-selected",x.dataset.type==="resid")});
-    $("#bill").value=qBill.value; update();
-  });
 
   /* ===== simulador completo ===== */
-  var type="resid", bill=$("#bill");
+  var type="resid", mode="brl", bill=$("#bill"), num=$("#billNum");
+  var vals={brl:600,kwh:630};
+  var CFG={brl:{min:100,max:5000,step:50,pre:"R$",suf:""},kwh:{min:100,max:5000,step:10,pre:"",suf:"kWh"}};
+  var tarifa=function(){return P.tarifa[type==="bomba"?"resid":type]};
+  var toKwh=function(r){return Math.round(r/tarifa()/10)*10};
+  var toBrl=function(k){return Math.round(k*tarifa()/50)*50};
   function setBar(id,pct){ $(id).style.width=Math.max(pct,2)+"%" }
+  function current(){ var pump=type==="bomba"; return {pump:pump, m:pump?"brl":mode}; }
+  function reais(){ var c=current(); return c.m==="kwh" ? vals.kwh*tarifa() : vals.brl; }
   function update(){
-    paint(bill); var v=+bill.value; $("#billOut").textContent=brl(v);
-    var pump = type==="bomba", r = pump?calcPump(v):calcSolar(v,type);
-    $("#billLabel").textContent = pump?"Gasto mensal atual com diesel ou energia na bomba":"Valor médio da sua conta de luz por mês";
+    var c=current(), pump=c.pump, m=c.m, cfg=CFG[m], val=vals[m];
+    bill.min=cfg.min; bill.max=cfg.max; bill.step=cfg.step; bill.value=val; paint(bill);
+    if(document.activeElement!==num) num.value=val;
+    $("#billPre").textContent=cfg.pre; $("#billSuf").textContent=cfg.suf;
+    $("#modes").classList.toggle("hide",pump);
+    $$(".mode").forEach(function(b){var on=b.dataset.mode===mode; b.classList.toggle("on",on); b.setAttribute("aria-pressed",on)});
+    var v=Math.max(reais(),50), r=pump?calcPump(v):calcSolar(v,type);
+    $("#billLabel").textContent = pump?"Gasto mensal atual com diesel ou energia na bomba":
+      (m==="kwh"?"Quanto você consome por mês (está na sua fatura, em kWh)":"Valor médio da sua conta de luz por mês");
+    $("#billHint").textContent = pump?"Some o que gasta por mês com diesel ou energia para bombear água.":
+      (m==="kwh"?"≈ "+brl(v)+" por mês (tarifa média de R$ "+tarifa().toFixed(2).replace(".",",")+" por kWh)":"≈ "+Math.round(v/tarifa()).toLocaleString("pt-BR")+" kWh por mês");
     $("#resTitle").textContent = pump?"Economia estimada com a bomba solar":"Economia estimada por mês";
     $("#solLabel").textContent = pump?"Com bomba solar":"Com solar";
     tween($("#rMonth"),r.mes,function(n){return brl(n)+"/mês"});
@@ -768,11 +796,28 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
     $("#metrics").style.gridTemplateColumns = pump?"1fr 1fr":"";
     return r;
   }
-  bill.addEventListener("input",update);
+  bill.addEventListener("input",function(){ vals[current().m]=+bill.value; update(); });
+  num.addEventListener("input",function(){
+    var n=Math.max(0,Math.min(99999,Math.round(+num.value||0))); vals[current().m]=n; update();
+  });
+  num.addEventListener("blur",function(){ if(!(vals[current().m]>0)){ vals[current().m]=CFG[current().m].min; } num.value=vals[current().m]; update(); });
+  $$(".mode").forEach(function(b){b.addEventListener("click",function(){
+    var to=b.dataset.mode; if(to===mode) return;
+    if(to==="kwh") vals.kwh=toKwh(vals.brl); else vals.brl=toBrl(vals.kwh);
+    mode=to; update();
+  })});
   $$(".tab").forEach(function(b){b.addEventListener("click",function(){
     $$(".tab").forEach(function(x){x.setAttribute("aria-selected",x===b)});
-    type=b.dataset.type; update();
+    type=b.dataset.type;
+    if(mode==="brl") vals.kwh=toKwh(vals.brl); else vals.brl=toBrl(vals.kwh);
+    update();
   })});
+
+  $("#qGo").addEventListener("click",function(){
+    type="resid"; mode="brl"; vals.brl=+qBill.value; vals.kwh=toKwh(vals.brl);
+    $$(".tab").forEach(function(x){x.setAttribute("aria-selected",x.dataset.type==="resid")});
+    update();
+  });
 
   /* ===== WhatsApp ===== */
   function waLink(text){return "https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(text)}
@@ -795,12 +840,15 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
     if(nome.value.trim().length<2){nome.classList.add("err");ok=false}
     if(tel.value.replace(/\D/g,"").length<10){tel.classList.add("err");ok=false}
     if(!ok){(nome.classList.contains("err")?nome:tel).focus();return}
-    var v=+bill.value, r=type==="bomba"?calcPump(v):calcSolar(v,type);
+    var v=Math.max(reais(),50), pump=type==="bomba", r=pump?calcPump(v):calcSolar(v,type);
+    var consumo = pump ? "Gasto mensal atual: "+brl(v) :
+      (mode==="kwh" ? "Consumo informado: "+vals.kwh.toLocaleString("pt-BR")+" kWh/mês (≈ "+brl(v)+")"
+                    : "Conta de luz: "+brl(v)+" (≈ "+Math.round(v/tarifa()).toLocaleString("pt-BR")+" kWh/mês)");
     var msg="Olá, CD Solar! Quero um orçamento.\n\n"+
       "Nome: "+nome.value.trim()+"\nWhatsApp: "+tel.value.trim()+"\nCidade: "+(cid.value.trim()||"Mortugaba - BA")+
-      "\nTipo: "+labels[type]+"\n"+(type==="bomba"?"Gasto mensal atual: ":"Conta de luz: ")+brl(v)+
+      "\nTipo: "+labels[type]+"\n"+consumo+
       "\n\nSimulação no site: economia estimada de "+brl(r.mes)+"/mês ("+brl(r.ano)+"/ano)"+
-      (type==="bomba"?"":", sistema de ~"+r.kwp.toFixed(1).replace(".",",")+" kWp.");
+      (pump?"":", sistema de ~"+r.kwp.toFixed(1).replace(".",",")+" kWp.");
     window.open(waLink(msg),"_blank","noopener");
   });
   var tel=$("#tel");
