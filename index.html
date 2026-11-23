@@ -134,7 +134,7 @@ section{position:relative}
 .tab[aria-selected=true]{background:linear-gradient(180deg,#ffe066,var(--yellow) 55%,var(--amber));color:#1a1450;font-weight:600}
 .field{margin-top:22px}
 .field label{display:block;font-size:13px;color:var(--muted);margin-bottom:7px}
-.field input[type=text],.field input[type=tel]{width:100%;height:48px;padding:0 15px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(8,8,79,.55);color:#fff;font-size:15px;outline:none;transition:border-color .25s,box-shadow .25s}
+.field input[type=text],.field input[type=tel],.field select{width:100%;height:48px;padding:0 15px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(8,8,79,.55);color:#fff;font-size:15px;outline:none;transition:border-color .25s,box-shadow .25s}
 .field input::placeholder{color:#7f83bd}
 .field input:focus{border-color:var(--yellow);box-shadow:0 0 0 4px rgba(255,201,41,.15)}
 .field input.err{border-color:#ff7b7b}
@@ -167,6 +167,13 @@ section{position:relative}
 .metrics strong{display:block;margin-top:2px;font-size:18px;font-weight:600;letter-spacing:-.03em;color:var(--navy)}
 .results .fine{color:var(--muted-ink);text-align:left}
 .formnote{margin-top:14px;font-size:12px;color:var(--muted)}
+.field select{appearance:none;-webkit-appearance:none;padding-right:38px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a9acd6' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:18px;font-size:14px}
+.field select option{color:#10106e;background:#fff}
+.field select:focus,.field input:focus{border-color:var(--yellow)}
+.field select.err{border-color:#ff7b7b}
+.field label{font-size:12.5px}
+.sumline{margin-top:20px;padding:11px 14px;border-radius:10px;background:rgba(255,201,41,.1);border:1px solid rgba(255,201,41,.3);color:var(--cream);font-size:13px;line-height:1.4}
+.formerr{margin-top:14px;font-size:13px;color:#ff9b9b}
 .hide{display:none!important}
 
 /* steps */
@@ -368,7 +375,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
         <span class="line appear a-mask" style="--d:.4s">Transforme sol em</span>
         <span class="line appear a-mask" style="--d:.58s"><em>economia</em> na sua conta.</span>
       </h1>
-      <p class="lede appear a-soft" style="--d:.8s">A CD Solar integra sistemas fotovoltaicos e bombas solares com projeto, instalação e suporte local. Simule agora quanto você economiza e receba seu orçamento no WhatsApp.</p>
+      <p class="lede appear a-soft" style="--d:.8s">A CD Solar projeta e instala energia solar e bombas solares em Mortugaba-BA e região, com suporte de quem está perto. Simule sua economia e receba o orçamento no WhatsApp.</p>
       <div class="hero-actions">
         <a class="btn btn-solid appear a-soft" style="--d:.95s" href="#orcamento">Pedir orçamento grátis</a>
         <a class="btn btn-ghost btn-wa appear a-side" style="--d:1.08s" href="#" data-wa="Olá! Vim pelo site da CD Solar e gostaria de conversar sobre energia solar.">
@@ -384,7 +391,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
 
     <div class="qwrap appear a-side" style="--d:.7s">
     <div class="guide" aria-hidden="true">
-      <div class="bubble tr appear a-pop" style="--d:1.7s" id="heroBubble">Oi! Eu sou o David 👷 Arraste e veja quanto você economiza.</div>
+      <div class="bubble tr appear a-pop" style="--d:1.7s" id="heroBubble">Oi! Sou o David, assistente virtual da CD Solar 👷 Arraste e veja quanto você economiza.</div>
       <div class="gav"><img src="assets/avatar-wave.png" alt="" width="278" height="569"></div>
     </div>
     <aside class="qcard" aria-label="Simulação rápida">
@@ -395,7 +402,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
       <div class="qres">
         <div class="big"><small>Você pode economizar por mês</small><strong id="qMonth">R$ 0</strong></div>
         <div><small>Em 1 ano</small><strong id="qYear">R$ 0</strong></div>
-        <div><small>Em 25 anos</small><strong id="q25">R$ 0</strong></div>
+        <div><small>Em 25 anos, já descontado o investimento</small><strong id="q25">R$ 0</strong></div>
       </div>
       <a href="#orcamento" class="btn btn-solid btn-block" id="qGo">Quero esse orçamento →</a>
       <p class="fine">Estimativa. A proposta final considera sua fatura real.</p>
@@ -438,7 +445,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
             <rect x="296" y="156" width="20" height="30" rx="3" fill="#ffe9a6"/><circle cx="306" cy="164" r="2.5" fill="#3ddc84"/><path d="M308 170l-5 8h4l-2 7 6-9h-4z" fill="#f29b1e"/>
             <path class="flow" d="M287 124L306 136V154" stroke="#ffc929" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
             <path class="flow" d="M296 176H282" stroke="#ffc929" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <g class="tag"><rect x="14" y="14" width="108" height="40" rx="10" fill="#fff"/><text x="26" y="35" font-family="Inter,sans-serif" font-weight="800" font-size="19" fill="#10106e">−95%</text><text x="26" y="47" font-family="Inter,sans-serif" font-weight="500" font-size="9" fill="#55587f">na conta de luz</text></g>
+            <g class="tag"><rect x="14" y="14" width="108" height="40" rx="10" fill="#fff"/><text x="26" y="35" font-family="Inter,sans-serif" font-weight="800" font-size="17" fill="#10106e">até 95%</text><text x="26" y="47" font-family="Inter,sans-serif" font-weight="500" font-size="9" fill="#55587f">na conta de luz</text></g>
           </svg>
         </div>
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15 6 5h12l3 10z"/><path d="M12 5v10M4.5 10h15M2 19h20"/></svg></div>
@@ -503,8 +510,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
           </svg>
         </div>
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6z"/><path d="m8.5 12 2.5 2.5L16 9.5"/></svg></div>
-        <h3>Homologação e suporte</h3>
-        <p>Cuidamos da burocracia com a distribuidora e seguimos ao seu lado depois da instalação.</p>
+        <h3>Registro, homologação e suporte</h3>
+        <p>Empresa registrada no CREA: cuidamos da burocracia com a distribuidora e seguimos ao seu lado depois da instalação.</p>
         <ul><li>Documentação e solicitação de acesso</li><li>Suporte técnico local</li><li>Limpeza e manutenção preventiva</li></ul>
       </article>
     </div>
@@ -537,19 +544,33 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
           <p class="hint" id="billHint">≈ 630 kWh por mês</p>
         </div>
         <form id="leadForm" novalidate>
-          <div class="field"><label for="nome">Seu nome</label><input type="text" id="nome" placeholder="Como podemos te chamar?" autocomplete="name"></div>
+          <p class="sumline" id="leadSummary" aria-live="polite"></p>
+          <div class="field"><label for="nome">Nome completo</label><input type="text" id="nome" placeholder="Nome e sobrenome" autocomplete="name"></div>
           <div class="row2">
             <div class="field"><label for="tel">WhatsApp</label><input type="tel" id="tel" placeholder="(77) 9 0000-0000" autocomplete="tel" inputmode="tel"></div>
-            <div class="field"><label for="cidade">Cidade</label><input type="text" id="cidade" value="Mortugaba - BA" autocomplete="address-level2"></div>
+            <div class="field"><label for="primeira">Primeira compra conosco?</label>
+              <select id="primeira"><option value="">Selecione</option><option value="Sim">Sim, é a primeira vez</option><option value="Não">Não, já sou cliente</option></select></div>
           </div>
+          <div class="field"><label for="endereco">Endereço completo</label><input type="text" id="endereco" placeholder="Rua, número, bairro, cidade e estado" autocomplete="street-address"></div>
+          <div class="row2">
+            <div class="field"><label for="origem">Por onde nos conheceu?</label>
+              <select id="origem"><option value="">Selecione</option><option>Instagram</option><option>Facebook</option><option>Google / pesquisa na internet</option><option>WhatsApp</option><option>Vi uma instalação ou obra</option><option>Panfleto, rádio ou carro de som</option><option>Outro</option></select></div>
+            <div class="field"><label for="indica">Veio por indicação?</label>
+              <select id="indica"><option value="">Selecione</option><option value="Não">Não</option><option value="Sim">Sim</option></select></div>
+          </div>
+          <div class="row2 hide" id="indicaBox">
+            <div class="field"><label for="indNome">Quem indicou?</label><input type="text" id="indNome" placeholder="Nome de quem indicou" autocomplete="off"></div>
+            <div class="field"><label for="indTel">Telefone do indicador</label><input type="tel" id="indTel" placeholder="(77) 9 0000-0000" inputmode="tel" autocomplete="off"></div>
+          </div>
+          <p class="formerr hide" id="formErr" role="alert">Confira os campos destacados em vermelho.</p>
           <div class="field" style="margin-top:24px"><button class="btn btn-solid btn-block btn-wa" type="submit"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg> Enviar pedido de orçamento</button></div>
-          <p class="formnote">Ao enviar, abrimos o WhatsApp com sua simulação já preenchida. Sem compromisso.</p>
+          <p class="formnote">Ao enviar, abrimos o WhatsApp com sua simulação e seus dados já preenchidos. Usamos as informações só para preparar o seu orçamento. Sem compromisso.</p>
         </form>
       </div>
 
       <div class="results reveal" style="--d:.12s" id="results" aria-live="polite">
         <div class="guide sim-guide" aria-hidden="true">
-          <div class="bubble tr"><b>Estes são só os números estimados.</b> Envie seu pedido e a CD Solar monta a proposta exata para o seu caso.</div>
+          <div class="bubble tr"><b>Estes números são uma estimativa.</b> Envie seu pedido e montamos a proposta exata para o seu caso.</div>
           <div class="gav"><img src="assets/avatar-point.png" alt="" width="290" height="574" loading="lazy"></div>
         </div>
         <h3 id="resTitle">Economia estimada por mês</h3>
@@ -558,9 +579,10 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
           <div class="bar now"><span>Hoje</span><div class="track"><div class="fill" id="bNow"></div></div><b id="vNow">R$ 0</b></div>
           <div class="bar sol"><span id="solLabel">Com solar</span><div class="track"><div class="fill" id="bSol"></div></div><b id="vSol">R$ 0</b></div>
         </div>
+        <p class="fine" id="barNote" style="margin-top:10px">Com solar, você continua pagando só a taxa mínima da distribuidora.</p>
         <div class="metrics" id="metrics">
           <div><small>Economia em 1 ano</small><strong id="rYear">—</strong></div>
-          <div><small>Em 25 anos</small><strong id="r25">—</strong></div>
+          <div><small id="r25Label">Em 25 anos, já descontado o investimento</small><strong id="r25">—</strong></div>
           <div class="m-pay"><small>Retorno do investimento</small><strong id="rPay">—</strong></div>
           <div class="m-sys"><small>Sistema estimado</small><strong id="rKwp">—</strong></div>
           <div class="m-sys"><small>Placas de 600 W</small><strong id="rPanels">—</strong></div>
@@ -580,8 +602,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
     <div class="steps">
       <div class="step reveal" style="--d:.05s"><h3>Simule e peça</h3><p>Use o simulador e envie seus dados pelo WhatsApp em menos de um minuto.</p></div>
       <div class="step reveal" style="--d:.15s"><h3>Proposta sob medida</h3><p>Analisamos sua fatura ou sua necessidade de água e enviamos a proposta detalhada.</p></div>
-      <div class="step reveal" style="--d:.25s"><h3>Projeto e homologação</h3><p>Fazemos o projeto e cuidamos de toda a documentação com a distribuidora.</p></div>
-      <div class="step reveal" style="--d:.35s"><h3>Instalação e suporte</h3><p>Equipe técnica instala, liga o sistema e acompanha sua geração depois.</p></div>
+      <div class="step reveal" style="--d:.25s"><h3>Projeto e aprovação</h3><p>Fazemos o projeto e cuidamos de toda a documentação para a aprovação na distribuidora.</p></div>
+      <div class="step reveal" style="--d:.35s"><h3>Instalação e ligação</h3><p>Instalamos o sistema, a distribuidora faz a vistoria e troca o medidor, e você começa a economizar. Depois, seguimos acompanhando sua geração.</p></div>
     </div>
   </div>
 </section>
@@ -604,14 +626,13 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
         <svg class="seal" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32 4 10 12v18c0 14 9 24 22 30 13-6 22-16 22-30V12z" fill="currentColor"/><path d="m21 32 8 8 15-17" stroke="#10106e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <div>
           <h3>Registro no CREA</h3>
-          <dl><div><dt>Nº do registro: </dt><dd style="display:inline"><b>0010377514</b></dd></div><div><dt>Regional: </dt><dd style="display:inline"><b>Nº 0001041831DD BA</b></dd></div></dl>
+          <dl><div><dt>CNPJ: </dt><dd style="display:inline"><b>08.058.509/0001-05</b></dd></div><div><dt>Nº do registro: </dt><dd style="display:inline"><b>0010377514</b></dd></div><div><dt>Regional: </dt><dd style="display:inline"><b>Nº 0001041831DD BA</b></dd></div></dl>
         </div>
       </div>
-      <div class="alert reveal" style="--d:.2s"><b>Cuidado com falsas empresas sem registro no CREA.</b> Ao pedir seu orçamento ou montar sua usina solar, exija o número do registro da <b>empresa</b> (não o do engenheiro). O barato pode sair caro: sem registro você não tem nenhuma segurança, e a empresa pode ser multada.</div>
+      <div class="alert reveal" style="--d:.2s"><b>Cuidado com falsas empresas sem registro no CREA.</b> Ao pedir seu orçamento ou montar sua usina solar, exija o número do registro da <b>empresa</b> (não o do engenheiro). O barato pode sair caro: sem registro, não há um responsável técnico pela obra e você fica sem respaldo se algo der errado.</div>
       <div class="hero-actions reveal" style="--d:.28s">
         <a class="btn btn-solid" href="#orcamento">Simular minha economia</a>
         <a class="btn btn-ghost btn-wa" href="#" data-wa="Olá! Vi que a CD Solar tem registro no CREA e gostaria de um orçamento."><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg> Falar com a CD Solar</a>
-        <a class="btn btn-ghost" href="https://www.instagram.com/cd_solar" target="_blank" rel="noopener">Instagram @cd_solar</a>
       </div>
     </div>
   </div>
@@ -623,11 +644,13 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
     <span class="eyebrow reveal">Dúvidas frequentes</span>
     <h2 class="sec-h reveal" style="--d:.08s">Respostas <em>rápidas</em> antes de começar.</h2>
     <div class="faq">
-      <details class="reveal"><summary>Funciona em dia nublado ou à noite?</summary><p>Em dia nublado o sistema ainda gera, só que menos. À noite, você usa a energia da rede e, na maioria dos casos, compensa com os créditos gerados durante o dia.</p></details>
+      <details class="reveal"><summary>Funciona em dia nublado ou à noite?</summary><p>Em dia nublado o sistema ainda gera, só que menos. À noite, você usa a energia da rede e paga com os créditos que o sistema acumulou durante o dia.</p></details>
+      <details class="reveal"><summary>E se faltar energia da rede?</summary><p>Por segurança, os sistemas ligados à rede desligam junto com ela e voltam sozinhos quando a energia retorna. Se você precisa de energia durante as quedas, fale com a gente sobre opções com bateria.</p></details>
       <details class="reveal"><summary>Em quanto tempo o investimento se paga?</summary><p>Depende do seu consumo e do tamanho do sistema. O simulador mostra uma estimativa, e na proposta detalhamos o retorno com base na sua fatura real.</p></details>
       <details class="reveal"><summary>A bomba solar precisa de energia da rede ou diesel?</summary><p>Não. Ela funciona com a energia dos próprios painéis, o que elimina o gasto com diesel e reduz a manutenção. É ideal para poços e áreas sem rede elétrica.</p></details>
       <details class="reveal"><summary>Vocês cuidam da burocracia com a distribuidora?</summary><p>Sim. Fazemos o projeto, a solicitação de acesso e o acompanhamento até o sistema estar liberado para operar.</p></details>
-      <details class="reveal"><summary>Atendem fora de Mortugaba?</summary><p>Atendemos Mortugaba e cidades da região. Informe sua cidade no formulário e confirmamos a viabilidade.</p></details>
+      <details class="reveal"><summary>Atendem fora de Mortugaba?</summary><p>Atendemos Mortugaba e cidades da região. Informe seu endereço no formulário e confirmamos a viabilidade.</p></details>
+      <details class="reveal"><summary>Precisa de manutenção?</summary><p>Muito pouca. Basicamente limpeza dos painéis de tempos em tempos e uma revisão preventiva, que a CD Solar também faz.</p></details>
     </div>
   </div>
 </section>
@@ -650,11 +673,11 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
 
 <footer>
   <div class="wrap">
-    <span style="display:flex;align-items:center;gap:16px"><img class="flogo" src="assets/logo-full.png" alt="CD Solar — A energia do futuro" width="140" height="134" loading="lazy"><span>CREA Nº 0010377514<br>Mortugaba · Bahia</span></span>
+    <span style="display:flex;align-items:center;gap:16px"><img class="flogo" src="assets/logo-full.png" alt="CD Solar — A energia do futuro" width="140" height="134" loading="lazy"><span>CNPJ 08.058.509/0001-05<br>CREA Nº 0010377514</span></span>
     <span class="contacts">
       <a href="#" data-wa="Olá! Gostaria de um orçamento de energia solar."><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg> +55 77 98129-6251</a>
       <a href="https://www.instagram.com/cd_solar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg> @cd_solar</a>
-      <span>Mortugaba · Bahia</span>
+      <span>Mortugaba-BA</span>
     </span>
     <span>© <span id="yr"></span> CD Solar. Todos os direitos reservados.</span>
   </div>
@@ -667,6 +690,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
 <script>
 (function(){
   /* ===== CONFIGURAÇÃO — ajuste aqui ===== */
+  var CRM_WEBHOOK = "";              // URL do CRM/planilha (Zapier, Make, Apps Script...) que recebe o primeiro lead em JSON
   var WA_NUMBER = "5577981296251";   // +55 77 98129-6251 (confira o 9 inicial: o cartão do CREA mostra (77) 98129-6251)
   var P = {                           // premissas da simulação (valores médios)
     tarifa:   { resid:.95, comercial:.92, rural:.78 }, // R$/kWh com impostos
@@ -779,8 +803,12 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
       (m==="kwh"?"Quanto você consome por mês (está na sua fatura, em kWh)":"Valor médio da sua conta de luz por mês");
     $("#billHint").textContent = pump?"Some o que gasta por mês com diesel ou energia para bombear água.":
       (m==="kwh"?"≈ "+brl(v)+" por mês (tarifa média de R$ "+tarifa().toFixed(2).replace(".",",")+" por kWh)":"≈ "+Math.round(v/tarifa()).toLocaleString("pt-BR")+" kWh por mês");
+    $("#leadSummary").innerHTML = pump ? "Gasto médio com diesel/energia: <b>"+brl(v)+"/mês</b>" :
+      "Consumo médio: <b>"+Math.round(v/tarifa()).toLocaleString("pt-BR")+" kWh/mês</b> &nbsp;·&nbsp; Conta média: <b>"+brl(v)+"</b>";
     $("#resTitle").textContent = pump?"Economia estimada com a bomba solar":"Economia estimada por mês";
     $("#solLabel").textContent = pump?"Com bomba solar":"Com solar";
+    $("#barNote").classList.toggle("hide",pump);
+    $("#r25Label").textContent = pump?"Em 25 anos":"Em 25 anos, já descontado o investimento";
     tween($("#rMonth"),r.mes,function(n){return brl(n)+"/mês"});
     tween($("#vNow"),v,brl); tween($("#vSol"),r.resto,brl);
     setBar("#bNow",100); setBar("#bSol",r.resto/v*100);
@@ -833,30 +861,62 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   });
 
   var labels={resid:"Residência",comercial:"Comércio",rural:"Propriedade rural",bomba:"Bomba solar"};
-  $("#leadForm").addEventListener("submit",function(e){
-    e.preventDefault();
-    var nome=$("#nome"),tel=$("#tel"),cid=$("#cidade"),ok=true;
-    [nome,tel].forEach(function(i){i.classList.remove("err")});
-    if(nome.value.trim().length<2){nome.classList.add("err");ok=false}
-    if(tel.value.replace(/\D/g,"").length<10){tel.classList.add("err");ok=false}
-    if(!ok){(nome.classList.contains("err")?nome:tel).focus();return}
-    var v=Math.max(reais(),50), pump=type==="bomba", r=pump?calcPump(v):calcSolar(v,type);
-    var consumo = pump ? "Gasto mensal atual: "+brl(v) :
-      (mode==="kwh" ? "Consumo informado: "+vals.kwh.toLocaleString("pt-BR")+" kWh/mês (≈ "+brl(v)+")"
-                    : "Conta de luz: "+brl(v)+" (≈ "+Math.round(v/tarifa()).toLocaleString("pt-BR")+" kWh/mês)");
-    var msg="Olá, CD Solar! Quero um orçamento.\n\n"+
-      "Nome: "+nome.value.trim()+"\nWhatsApp: "+tel.value.trim()+"\nCidade: "+(cid.value.trim()||"Mortugaba - BA")+
-      "\nTipo: "+labels[type]+"\n"+consumo+
-      "\n\nSimulação no site: economia estimada de "+brl(r.mes)+"/mês ("+brl(r.ano)+"/ano)"+
-      (pump?"":", sistema de ~"+r.kwp.toFixed(1).replace(".",",")+" kWp.");
-    window.open(waLink(msg),"_blank","noopener");
-  });
-  var tel=$("#tel");
-  tel.addEventListener("input",function(){
-    var d=tel.value.replace(/\D/g,"").slice(0,11), o=d;
+  var maskPhone=function(el){el.addEventListener("input",function(){
+    var d=el.value.replace(/\D/g,"").slice(0,11), o=d;
     if(d.length>2) o="("+d.slice(0,2)+") "+d.slice(2);
     if(d.length>7) o="("+d.slice(0,2)+") "+d.slice(2,d.length>10?7:6)+"-"+d.slice(d.length>10?7:6);
-    tel.value=o;
+    el.value=o;
+  })};
+  var tel=$("#tel"), indTel=$("#indTel"); maskPhone(tel); maskPhone(indTel);
+  $("#indica").addEventListener("change",function(){ $("#indicaBox").classList.toggle("hide",this.value!=="Sim") });
+
+  $("#leadForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    var f={nome:$("#nome"),tel:tel,primeira:$("#primeira"),endereco:$("#endereco"),origem:$("#origem"),indica:$("#indica"),indNome:$("#indNome"),indTel:indTel};
+    Object.keys(f).forEach(function(k){f[k].classList.remove("err")});
+    var bad=[], digits=function(el){return el.value.replace(/\D/g,"").length};
+    if(f.nome.value.trim().split(/\s+/).filter(Boolean).length<2) bad.push(f.nome);
+    if(digits(f.tel)<10) bad.push(f.tel);
+    if(!f.primeira.value) bad.push(f.primeira);
+    if(f.endereco.value.trim().length<8) bad.push(f.endereco);
+    if(!f.origem.value) bad.push(f.origem);
+    if(!f.indica.value) bad.push(f.indica);
+    if(f.indica.value==="Sim"){
+      if(f.indNome.value.trim().length<2) bad.push(f.indNome);
+      if(digits(f.indTel)<10) bad.push(f.indTel);
+    }
+    $("#formErr").classList.toggle("hide",!bad.length);
+    if(bad.length){ bad.forEach(function(el){el.classList.add("err")}); bad[0].focus(); return }
+
+    var v=Math.max(reais(),50), pump=type==="bomba", r=pump?calcPump(v):calcSolar(v,type);
+    var kwhMed=Math.round(v/tarifa());
+    var ind = f.indica.value==="Sim" ? "Sim — "+f.indNome.value.trim()+" ("+f.indTel.value.trim()+")" : "Não";
+    var consumo = pump ? "Gasto mensal atual (diesel/energia): "+brl(v) :
+      "Consumo médio: "+kwhMed.toLocaleString("pt-BR")+" kWh/mês\nConta média: "+brl(v);
+    var msg="Olá, CD Solar! Quero um orçamento.\n\n"+
+      "*Dados do cliente*\n"+
+      "Nome completo: "+f.nome.value.trim()+"\n"+
+      "WhatsApp: "+f.tel.value.trim()+"\n"+
+      "Endereço: "+f.endereco.value.trim()+"\n"+
+      "Primeira compra: "+f.primeira.value+"\n"+
+      "Conheceu a CD Solar por: "+f.origem.value+"\n"+
+      "Veio por indicação: "+ind+"\n\n"+
+      "*Projeto*\n"+
+      "Tipo: "+labels[type]+"\n"+consumo+"\n\n"+
+      "*Simulação no site*\n"+
+      "Economia estimada: "+brl(r.mes)+"/mês ("+brl(r.ano)+"/ano)"+
+      (pump?"":"\nSistema estimado: ~"+r.kwp.toFixed(1).replace(".",",")+" kWp");
+    window.open(waLink(msg),"_blank","noopener");
+
+    /* registro do primeiro lead no CRM (opcional: preencha CRM_WEBHOOK no topo do script) */
+    if(CRM_WEBHOOK){
+      var lead={data:new Date().toISOString(),nome_completo:f.nome.value.trim(),endereco_completo:f.endereco.value.trim(),
+        consumo_medio_kwh:pump?null:kwhMed,media_conta_reais:Math.round(v),telefone:f.tel.value.trim(),
+        veio_por_indicacao:f.indica.value==="Sim",indicado_por:f.indica.value==="Sim"?f.indNome.value.trim():"",
+        telefone_indicacao:f.indica.value==="Sim"?f.indTel.value.trim():"",como_conheceu:f.origem.value,
+        primeira_compra:f.primeira.value==="Sim",tipo_projeto:labels[type],economia_mensal_estimada:Math.round(r.mes)};
+      try{ fetch(CRM_WEBHOOK,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain"},body:JSON.stringify(lead)}) }catch(err){}
+    }
   });
 
   updQuick(); update();
