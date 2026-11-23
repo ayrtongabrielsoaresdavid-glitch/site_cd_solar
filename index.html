@@ -174,6 +174,22 @@ section{position:relative}
 .field label{font-size:12.5px}
 .sumline{margin-top:20px;padding:11px 14px;border-radius:10px;background:rgba(255,201,41,.1);border:1px solid rgba(255,201,41,.3);color:var(--cream);font-size:13px;line-height:1.4}
 .formerr{margin-top:14px;font-size:13px;color:#ff9b9b}
+.fstep{display:none}.fstep.on{display:block}
+.fprog{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:18px}
+.fprog li{display:block}
+.fprog button{width:100%;height:32px;border-radius:8px;font-size:12px;font-family:inherit;color:var(--muted);background:rgba(8,8,79,.55);border:1px solid rgba(255,255,255,.12);cursor:pointer;transition:all .3s}
+.fprog button:hover:not(:disabled){border-color:rgba(255,233,166,.7);color:#fff}
+.fprog button:disabled{opacity:.38;cursor:not-allowed}
+.opt{font-weight:400;color:var(--muted);font-size:11.5px}
+.cephint{margin:2px 0 0}
+.fprog li.on button{color:#1a1450;font-weight:700;background:linear-gradient(180deg,#ffe066,var(--yellow) 55%,var(--amber));border-color:#ffe28a}
+.fprog li.done button{color:var(--cream);border-color:rgba(255,201,41,.55)}
+.fnav{display:flex;gap:10px;margin-top:24px}.fnav .btn{flex:1}.fnav #fBack{flex:0 0 auto}
+.rv-dest{margin-top:16px;padding:12px 14px;border-radius:10px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.35);font-size:13px;color:#d9ffe6;line-height:1.45}
+.rv-title{margin-top:18px;font-size:13px;font-weight:600;color:var(--cream)}
+.review{margin-top:10px;display:grid;gap:8px}
+.review div{display:flex;justify-content:space-between;gap:14px;font-size:13.5px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.1)}
+.review dt{color:var(--muted);flex:none}.review dd{text-align:right;font-weight:500;color:#fff;word-break:break-word}
 .hide{display:none!important}
 
 /* steps */
@@ -545,26 +561,55 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
         </div>
         <form id="leadForm" novalidate>
           <p class="sumline" id="leadSummary" aria-live="polite"></p>
-          <div class="field"><label for="nome">Nome completo</label><input type="text" id="nome" placeholder="Nome e sobrenome" autocomplete="name"></div>
-          <div class="row2">
-            <div class="field"><label for="tel">WhatsApp</label><input type="tel" id="tel" placeholder="(77) 9 0000-0000" autocomplete="tel" inputmode="tel"></div>
-            <div class="field"><label for="primeira">Primeira compra conosco?</label>
-              <select id="primeira"><option value="">Selecione</option><option value="Sim">Sim, é a primeira vez</option><option value="Não">Não, já sou cliente</option></select></div>
+          <ol class="fprog" id="fprog" aria-label="Etapas do pedido"><li class="on"><button type="button" data-go="1" aria-current="step">1 · Contato</button></li><li><button type="button" data-go="2">2 · Perfil</button></li><li><button type="button" data-go="3">3 · Revisão</button></li></ol>
+
+          <div class="fstep on" data-s="1">
+            <div class="field"><label for="nome">Nome completo *</label><input type="text" id="nome" placeholder="Nome e sobrenome" autocomplete="name" required></div>
+            <div class="field"><label for="tel">WhatsApp *</label><input type="tel" id="tel" placeholder="(77) 9 0000-0000" autocomplete="tel" inputmode="tel" required></div>
+            <div class="row2">
+              <div class="field"><label for="cep">CEP *</label><input type="text" id="cep" placeholder="00000-000" inputmode="numeric" autocomplete="postal-code" maxlength="9" required></div>
+              <div class="field"><label for="uf">Estado *</label><select id="uf" autocomplete="address-level1" required><option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option><option value="BA" selected>BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option><option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option><option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option></select></div>
+            </div>
+            <p class="hint cephint" id="cepHint">Digite o CEP e preenchemos cidade, bairro e rua para você.</p>
+            <div class="row2">
+              <div class="field"><label for="cidade">Cidade *</label><input type="text" id="cidade" placeholder="Cidade" autocomplete="address-level2" required></div>
+              <div class="field"><label for="bairro">Bairro *</label><input type="text" id="bairro" placeholder="Bairro" autocomplete="off" required></div>
+            </div>
+            <div class="field"><label for="rua">Rua *</label><input type="text" id="rua" placeholder="Rua, avenida, povoado ou sítio" autocomplete="address-line1" required></div>
+            <div class="row2">
+              <div class="field"><label for="numero">Número *</label><input type="text" id="numero" placeholder="Ex.: 120 ou S/N" autocomplete="off" required></div>
+              <div class="field"><label for="compl">Complemento <span class="opt">(opcional)</span></label><input type="text" id="compl" placeholder="Apto, bloco, referência" autocomplete="address-line2"></div>
+            </div>
           </div>
-          <div class="field"><label for="endereco">Endereço completo</label><input type="text" id="endereco" placeholder="Rua, número, bairro, cidade e estado" autocomplete="street-address"></div>
-          <div class="row2">
-            <div class="field"><label for="origem">Por onde nos conheceu?</label>
-              <select id="origem"><option value="">Selecione</option><option>Instagram</option><option>Facebook</option><option>Google / pesquisa na internet</option><option>WhatsApp</option><option>Vi uma instalação ou obra</option><option>Panfleto, rádio ou carro de som</option><option>Outro</option></select></div>
-            <div class="field"><label for="indica">Veio por indicação?</label>
-              <select id="indica"><option value="">Selecione</option><option value="Não">Não</option><option value="Sim">Sim</option></select></div>
+
+          <div class="fstep" data-s="2">
+            <div class="row2">
+              <div class="field"><label for="primeira">Primeira compra conosco? *</label>
+                <select id="primeira" required><option value="">Selecione</option><option value="Sim">Sim, é a primeira vez</option><option value="Não">Não, já sou cliente</option></select></div>
+              <div class="field"><label for="origem">Por onde nos conheceu? *</label>
+                <select id="origem" required><option value="">Selecione</option><option>Instagram</option><option>Facebook</option><option>Google / pesquisa na internet</option><option>WhatsApp</option><option>Vi uma instalação ou obra</option><option>Panfleto, rádio ou carro de som</option><option>Outro</option></select></div>
+            </div>
+            <div class="field"><label for="indica">Veio por indicação? *</label>
+              <select id="indica" required><option value="">Selecione</option><option value="Não">Não</option><option value="Sim">Sim</option></select></div>
+            <div class="row2 hide" id="indicaBox">
+              <div class="field"><label for="indNome">Quem indicou? *</label><input type="text" id="indNome" placeholder="Nome de quem indicou" autocomplete="off"></div>
+              <div class="field"><label for="indTel">Telefone do indicador *</label><input type="tel" id="indTel" placeholder="(77) 9 0000-0000" inputmode="tel" autocomplete="off"></div>
+            </div>
           </div>
-          <div class="row2 hide" id="indicaBox">
-            <div class="field"><label for="indNome">Quem indicou?</label><input type="text" id="indNome" placeholder="Nome de quem indicou" autocomplete="off"></div>
-            <div class="field"><label for="indTel">Telefone do indicador</label><input type="tel" id="indTel" placeholder="(77) 9 0000-0000" inputmode="tel" autocomplete="off"></div>
+
+          <div class="fstep" data-s="3">
+            <p class="rv-title">Confira seus dados</p>
+            <dl class="review" id="review"></dl>
+            <p class="rv-dest">Ao continuar, abriremos o WhatsApp da CD Solar (<b id="waShown"></b>) com a mensagem completa já pronta para enviar.</p>
           </div>
-          <p class="formerr hide" id="formErr" role="alert">Confira os campos destacados em vermelho.</p>
-          <div class="field" style="margin-top:24px"><button class="btn btn-solid btn-block btn-wa" type="submit"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg> Enviar pedido de orçamento</button></div>
-          <p class="formnote">Ao enviar, abrimos o WhatsApp com sua simulação e seus dados já preenchidos. Usamos as informações só para preparar o seu orçamento. Sem compromisso.</p>
+
+          <p class="formerr hide" id="formErr" role="alert"></p>
+          <div class="fnav">
+            <button type="button" class="btn btn-ghost hide" id="fBack">Voltar</button>
+            <button type="button" class="btn btn-solid" id="fNext">Continuar</button>
+            <button type="submit" class="btn btn-solid btn-wa hide" id="fSend"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg> Solicitar orçamento pelo WhatsApp</button>
+          </div>
+          <p class="formnote">Campos com * são obrigatórios. Usamos as informações só para preparar o seu orçamento. Sem compromisso.</p>
         </form>
       </div>
 
@@ -822,6 +867,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
       $("#rArea").textContent = "≈ "+Math.round(r.area)+" m²";
     }
     $("#metrics").style.gridTemplateColumns = pump?"1fr 1fr":"";
+    if(typeof step!=="undefined"&&step===3) renderReview();
     return r;
   }
   bill.addEventListener("input",function(){ vals[current().m]=+bill.value; update(); });
@@ -870,51 +916,150 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   var tel=$("#tel"), indTel=$("#indTel"); maskPhone(tel); maskPhone(indTel);
   $("#indica").addEventListener("change",function(){ $("#indicaBox").classList.toggle("hide",this.value!=="Sim") });
 
-  $("#leadForm").addEventListener("submit",function(e){
-    e.preventDefault();
-    var f={nome:$("#nome"),tel:tel,primeira:$("#primeira"),endereco:$("#endereco"),origem:$("#origem"),indica:$("#indica"),indNome:$("#indNome"),indTel:indTel};
-    Object.keys(f).forEach(function(k){f[k].classList.remove("err")});
-    var bad=[], digits=function(el){return el.value.replace(/\D/g,"").length};
-    if(f.nome.value.trim().split(/\s+/).filter(Boolean).length<2) bad.push(f.nome);
-    if(digits(f.tel)<10) bad.push(f.tel);
-    if(!f.primeira.value) bad.push(f.primeira);
-    if(f.endereco.value.trim().length<8) bad.push(f.endereco);
-    if(!f.origem.value) bad.push(f.origem);
-    if(!f.indica.value) bad.push(f.indica);
-    if(f.indica.value==="Sim"){
-      if(f.indNome.value.trim().length<2) bad.push(f.indNome);
-      if(digits(f.indTel)<10) bad.push(f.indTel);
+  /* ----- formulário em etapas: só avança com os obrigatórios preenchidos ----- */
+  var step=1;
+  var F={nome:$("#nome"),tel:tel,cep:$("#cep"),uf:$("#uf"),cidade:$("#cidade"),bairro:$("#bairro"),rua:$("#rua"),numero:$("#numero"),compl:$("#compl"),primeira:$("#primeira"),origem:$("#origem"),indica:$("#indica"),indNome:$("#indNome"),indTel:indTel};
+  var STEP_FIELDS={1:[F.nome,F.tel,F.cep,F.uf,F.cidade,F.bairro,F.rua,F.numero,F.compl],2:[F.primeira,F.origem,F.indica,F.indNome,F.indTel]};
+  var digits=function(el){return el.value.replace(/\D/g,"").length};
+  var waShown="+"+WA_NUMBER.slice(0,2)+" "+WA_NUMBER.slice(2,4)+" "+WA_NUMBER.slice(4,9)+"-"+WA_NUMBER.slice(9);
+  $("#waShown").textContent=waShown;
+  function invalid(n){
+    var bad=[];
+    if(n===1){
+      if(F.nome.value.trim().split(/\s+/).filter(Boolean).length<2) bad.push(F.nome);
+      if(digits(F.tel)<10) bad.push(F.tel);
+      if(digits(F.cep)!==8) bad.push(F.cep);
+      if(!F.uf.value) bad.push(F.uf);
+      if(F.cidade.value.trim().length<2) bad.push(F.cidade);
+      if(F.bairro.value.trim().length<2) bad.push(F.bairro);
+      if(F.rua.value.trim().length<3) bad.push(F.rua);
+      if(!F.numero.value.trim()) bad.push(F.numero);
     }
-    $("#formErr").classList.toggle("hide",!bad.length);
-    if(bad.length){ bad.forEach(function(el){el.classList.add("err")}); bad[0].focus(); return }
+    if(n===2){
+      if(!F.primeira.value) bad.push(F.primeira);
+      if(!F.origem.value) bad.push(F.origem);
+      if(!F.indica.value) bad.push(F.indica);
+      if(F.indica.value==="Sim"){
+        if(F.indNome.value.trim().length<2) bad.push(F.indNome);
+        if(digits(F.indTel)<10) bad.push(F.indTel);
+      }
+    }
+    return bad;
+  }
+  function tabOk(n){ for(var k=1;k<n;k++){ if(invalid(k).length) return false } return true }
+  function refreshTabs(){
+    $$("#fprog button").forEach(function(b){
+      var n=+b.dataset.go, ok=n<=step||tabOk(n);
+      b.disabled=!ok; b.setAttribute("aria-disabled",String(!ok));
+      b.title = ok ? "" : "Preencha os campos obrigatórios da etapa anterior para liberar";
+    });
+  }
+  function showErr(msg){ var e=$("#formErr"); e.textContent=msg; e.classList.toggle("hide",!msg) }
+  function mark(n,bad){ STEP_FIELDS[n].forEach(function(el){el.classList.remove("err")}); bad.forEach(function(el){el.classList.add("err")}) }
+  Object.keys(F).forEach(function(k){ ["input","change"].forEach(function(ev){ F[k].addEventListener(ev,function(){ F[k].classList.remove("err"); refreshTabs(); }) }) });
 
+  function enderecoStr(){
+    var l=F.rua.value.trim()+", "+F.numero.value.trim();
+    if(F.compl.value.trim()) l+=" ("+F.compl.value.trim()+")";
+    return l+" — "+F.bairro.value.trim()+", "+F.cidade.value.trim()+" - "+F.uf.value+", CEP "+F.cep.value.trim();
+  }
+  function snapshot(){
     var v=Math.max(reais(),50), pump=type==="bomba", r=pump?calcPump(v):calcSolar(v,type);
-    var kwhMed=Math.round(v/tarifa());
-    var ind = f.indica.value==="Sim" ? "Sim — "+f.indNome.value.trim()+" ("+f.indTel.value.trim()+")" : "Não";
-    var consumo = pump ? "Gasto mensal atual (diesel/energia): "+brl(v) :
-      "Consumo médio: "+kwhMed.toLocaleString("pt-BR")+" kWh/mês\nConta média: "+brl(v);
-    var msg="Olá, CD Solar! Quero um orçamento.\n\n"+
+    return {v:v,pump:pump,r:r,kwh:Math.round(v/tarifa())};
+  }
+  function buildMessage(){
+    var d=snapshot(), v=d.v, r=d.r;
+    var ind = F.indica.value==="Sim" ? "Sim — "+F.indNome.value.trim()+" ("+F.indTel.value.trim()+")" : "Não";
+    var consumo = d.pump ? "Gasto mensal atual (diesel/energia): "+brl(v) :
+      "Consumo médio: "+d.kwh.toLocaleString("pt-BR")+" kWh/mês\nConta média: "+brl(v);
+    return "Olá, CD Solar! Quero um orçamento.\n\n"+
       "*Dados do cliente*\n"+
-      "Nome completo: "+f.nome.value.trim()+"\n"+
-      "WhatsApp: "+f.tel.value.trim()+"\n"+
-      "Endereço: "+f.endereco.value.trim()+"\n"+
-      "Primeira compra: "+f.primeira.value+"\n"+
-      "Conheceu a CD Solar por: "+f.origem.value+"\n"+
+      "Nome completo: "+F.nome.value.trim()+"\n"+
+      "WhatsApp: "+F.tel.value.trim()+"\n"+
+      "Endereço: "+enderecoStr()+"\n"+
+      "Primeira compra: "+F.primeira.value+"\n"+
+      "Conheceu a CD Solar por: "+F.origem.value+"\n"+
       "Veio por indicação: "+ind+"\n\n"+
       "*Projeto*\n"+
       "Tipo: "+labels[type]+"\n"+consumo+"\n\n"+
       "*Simulação no site*\n"+
       "Economia estimada: "+brl(r.mes)+"/mês ("+brl(r.ano)+"/ano)"+
-      (pump?"":"\nSistema estimado: ~"+r.kwp.toFixed(1).replace(".",",")+" kWp");
+      (d.pump?"":"\nSistema estimado: ~"+r.kwp.toFixed(1).replace(".",",")+" kWp");
+  }
+  function renderReview(){
+    var d=snapshot(), rows=[
+      ["Nome",F.nome.value.trim()],["WhatsApp",F.tel.value.trim()],["Endereço",enderecoStr()],
+      ["Primeira compra",F.primeira.value],["Conheceu por",F.origem.value],
+      ["Indicação",F.indica.value==="Sim"?F.indNome.value.trim()+" · "+F.indTel.value.trim():"Não"],
+      ["Projeto",labels[type]],
+      d.pump?["Gasto mensal",brl(d.v)]:["Consumo médio",d.kwh.toLocaleString("pt-BR")+" kWh/mês"],
+      ["Conta média",d.pump?"—":brl(d.v)],
+      ["Economia estimada",brl(d.r.mes)+"/mês"]
+    ];
+    var dl=$("#review"); dl.innerHTML="";
+    rows.forEach(function(p){ var w=document.createElement("div"), a=document.createElement("dt"), b=document.createElement("dd"); a.textContent=p[0]; b.textContent=p[1]; w.appendChild(a); w.appendChild(b); dl.appendChild(w) });
+  }
+  function showStep(n){
+    step=n;
+    $$(".fstep").forEach(function(el){ el.classList.toggle("on",+el.dataset.s===n) });
+    $$("#fprog li").forEach(function(li,idx){ li.classList.toggle("on",idx+1===n); li.classList.toggle("done",idx+1<n);
+      li.firstElementChild.setAttribute("aria-current", idx+1===n ? "step" : "false") });
+    $("#fBack").classList.toggle("hide",n===1);
+    $("#fNext").classList.toggle("hide",n===3);
+    $("#fSend").classList.toggle("hide",n!==3);
+    showErr("");
+    refreshTabs();
+    if(n===3) renderReview();
+    var f=$("#leadForm"); if(f.getBoundingClientRect().top<0) f.scrollIntoView({block:"start",behavior:"smooth"});
+  }
+  function goNext(){
+    var bad=invalid(step); mark(step,bad);
+    if(bad.length){ showErr("Preencha os campos obrigatórios destacados em vermelho para continuar."); bad[0].focus(); return false }
+    showStep(step+1); return true;
+  }
+  F.cep.addEventListener("input",function(){
+    var d=F.cep.value.replace(/\D/g,"").slice(0,8);
+    F.cep.value = d.length>5 ? d.slice(0,5)+"-"+d.slice(5) : d;
+    if(d.length===8) lookupCep(d);
+  });
+  function lookupCep(d){
+    if(!window.fetch) return;
+    fetch("https://viacep.com.br/ws/"+d+"/json/").then(function(r){return r.json()}).then(function(j){
+      if(!j||j.erro||F.cep.value.replace(/\D/g,"")!==d) return;
+      [["uf",j.uf],["cidade",j.localidade],["bairro",j.bairro],["rua",j.logradouro]].forEach(function(p){
+        if(p[1]){ F[p[0]].value=p[1]; F[p[0]].classList.remove("err") }
+      });
+      refreshTabs();
+      (F.rua.value.trim()?F.numero:F.rua).focus();
+    }).catch(function(){});
+  }
+  $("#fNext").addEventListener("click",goNext);
+  function goTo(n){
+    if(n===step) return;
+    if(n<step){ showStep(n); return }                      /* voltar para editar é sempre livre */
+    while(step<n){ if(!goNext()) return }                  /* avançar exige os obrigatórios de cada etapa */
+  }
+  $$("#fprog button").forEach(function(b){ b.addEventListener("click",function(){ goTo(+b.dataset.go) }) });
+  $("#fBack").addEventListener("click",function(){ if(step>1) showStep(step-1) });
+  refreshTabs();
+
+  $("#leadForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    if(step<3){ goNext(); return }              /* Enter nas etapas 1 e 2 apenas tenta avançar */
+    for(var n=1;n<=2;n++){                       /* revalida tudo: nada é enviado com obrigatório em branco */
+      var bad=invalid(n); mark(n,bad);
+      if(bad.length){ showStep(n); showErr("Faltam campos obrigatórios nesta etapa. Preencha para continuar."); bad[0].focus(); return }
+    }
+    var d=snapshot(), msg=buildMessage();
     window.open(waLink(msg),"_blank","noopener");
 
     /* registro do primeiro lead no CRM (opcional: preencha CRM_WEBHOOK no topo do script) */
     if(CRM_WEBHOOK){
-      var lead={data:new Date().toISOString(),nome_completo:f.nome.value.trim(),endereco_completo:f.endereco.value.trim(),
-        consumo_medio_kwh:pump?null:kwhMed,media_conta_reais:Math.round(v),telefone:f.tel.value.trim(),
-        veio_por_indicacao:f.indica.value==="Sim",indicado_por:f.indica.value==="Sim"?f.indNome.value.trim():"",
-        telefone_indicacao:f.indica.value==="Sim"?f.indTel.value.trim():"",como_conheceu:f.origem.value,
-        primeira_compra:f.primeira.value==="Sim",tipo_projeto:labels[type],economia_mensal_estimada:Math.round(r.mes)};
+      var lead={data:new Date().toISOString(),nome_completo:F.nome.value.trim(),endereco_completo:enderecoStr(),cep:F.cep.value.trim(),estado:F.uf.value,cidade:F.cidade.value.trim(),bairro:F.bairro.value.trim(),rua:F.rua.value.trim(),numero:F.numero.value.trim(),complemento:F.compl.value.trim(),
+        consumo_medio_kwh:d.pump?null:d.kwh,media_conta_reais:Math.round(d.v),telefone:F.tel.value.trim(),
+        veio_por_indicacao:F.indica.value==="Sim",indicado_por:F.indica.value==="Sim"?F.indNome.value.trim():"",
+        telefone_indicacao:F.indica.value==="Sim"?F.indTel.value.trim():"",como_conheceu:F.origem.value,
+        primeira_compra:F.primeira.value==="Sim",tipo_projeto:labels[type],economia_mensal_estimada:Math.round(d.r.mes)};
       try{ fetch(CRM_WEBHOOK,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain"},body:JSON.stringify(lead)}) }catch(err){}
     }
   });
