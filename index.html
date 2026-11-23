@@ -915,6 +915,10 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   var normPhone=function(raw){
     var plus=/^\s*\+/.test(raw), d=String(raw).replace(/\D/g,"");
     if((d.length>=12||plus) && d.slice(0,2)==="55") d=d.slice(2);
+    if(d.charAt(0)==="0"){                                   /* nenhum DDD começa com 0: tira o 0 de longa distância */
+      d=d.replace(/^0+/,"");
+      if(d.length>11) d=d.slice(2);                          /* e o código da operadora, ex.: 0 31 77 ... */
+    }
     return d.slice(0,11);
   };
   var fmtPhone=function(d){
@@ -927,7 +931,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   var maskPhone=function(el){
     el.addEventListener("input",function(){
       var raw=el.value;
-      if(/^\s*\+/.test(raw)){ el.value=raw.replace(/[^\d+\s()\-]/g,"").slice(0,24); return }   /* digitando com +55: deixa terminar */
+      if(/^\s*[+0]/.test(raw)){ el.value=raw.replace(/[^\d+\s()\-xX]/g,"").slice(0,24); return }   /* digitando com +55 ou 0: deixa terminar */
       el.value=fmtPhone(normPhone(raw));
     });
     el.addEventListener("blur",function(){ if(el.value) el.value=phoneDisp(el) });
