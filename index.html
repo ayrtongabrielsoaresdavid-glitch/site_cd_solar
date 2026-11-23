@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
 <style>
-html,body{background:#08084f;color:#fff}
+html,body{background:#03031c;color:#fff}
 :root{
   --bg:#08084f; --navy:#10106e; --navy-2:#17178a;
   --yellow:#ffc929; --amber:#f29b1e; --sky:#7db0ea; --cream:#ffe9a6;
@@ -138,6 +138,19 @@ h1 .line{display:block;overflow:hidden;padding:.04em .1em .12em}
 .appside{display:flex;flex-direction:column;padding:28px;border-left:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.2)}
 .ds-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5)}
 .ds-head i{width:7px;height:7px;border-radius:50%;background:#3ddc84;box-shadow:0 0 8px #3ddc84}
+/* David em pé no campo de placas, entre o horizonte e o simulador */
+.hero-david{position:relative;z-index:2;display:flex;justify-content:flex-end;align-items:flex-end;gap:14px;height:210px;margin:0 36px -16px 0;pointer-events:none}
+.hero-david .bubble{align-self:center;margin-bottom:34px;max-width:270px}
+.hero-av{height:210px;width:auto;transform-origin:50% 100%;animation:bob 4.6s ease-in-out infinite;filter:drop-shadow(0 16px 18px rgba(0,0,20,.65))}
+.hero-low .wrap{padding-top:24px}
+.appside{justify-content:center}
+.appside .ds-list{margin-top:18px;padding-top:18px;gap:14px}
+@media(max-width:560px){
+  .hero-david{height:158px;margin:0 2px -12px 0;gap:8px}
+  .hero-david .bubble{max-width:200px;font-size:12.5px;margin-bottom:22px}
+  .hero-av{height:158px}
+  .hero-low .wrap{padding-top:18px}
+}
 .ds-stage{display:grid;grid-template-columns:1fr 112px;align-items:end;gap:14px;margin-top:20px}
 .ds-stage .bubble{align-self:start;margin-top:14px;max-width:none}
 .ds-av{width:112px;height:auto;transform-origin:50% 100%;animation:bob 4.6s ease-in-out infinite;filter:drop-shadow(0 14px 16px rgba(0,0,40,.5))}
@@ -396,6 +409,148 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   .crea{grid-template-columns:1fr}
 }
 
+/* =========================================================
+   TEMA UNIFICADO — todo o site no clima do topo (amanhecer solar,
+   vidro escuro, rótulo com ponto, palavra em degradê de sol)
+   ========================================================= */
+html,body{background:#03031c}
+main,footer{position:relative;z-index:1}
+.bubble{color:#0d0d3d}
+.site-guides{position:fixed;inset:0;z-index:0;pointer-events:none}
+.site-guides::before,.site-guides::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.06)}
+.site-guides::before{left:calc(50% - 590px)}.site-guides::after{left:calc(50% + 590px)}
+@media(max-width:1240px){.site-guides{display:none}}
+.hero .guides{display:none}
+
+/* seções: fundo único escuro, separador fino e brilho de sol suave */
+.light,.dark{background:transparent;color:#fff;--ink:#fff;--muted-ink:rgba(255,255,255,.62)}
+section.pad{border-top:1px solid rgba(255,255,255,.07);overflow:hidden}
+section.pad::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(760px 420px at 88% 0%,rgba(242,155,30,.11),transparent 70%),radial-gradient(640px 420px at 6% 100%,rgba(70,70,220,.14),transparent 70%)}
+section.pad:nth-of-type(odd)::before{background:radial-gradient(760px 420px at 10% 0%,rgba(242,155,30,.10),transparent 70%),radial-gradient(640px 420px at 94% 100%,rgba(70,70,220,.14),transparent 70%)}
+section.pad>.wrap{position:relative;z-index:1}
+
+/* rótulo da seção: ponto + texto + etiqueta (como o SectionEyebrow) */
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13.5px;font-weight:500;letter-spacing:-.01em;text-transform:none;color:rgba(255,255,255,.88)}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--yellow);box-shadow:0 0 10px var(--yellow)}
+.eyebrow small{padding:2px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.12);font-size:11.5px;color:rgba(255,255,255,.55)}
+.sec-h{margin-top:18px;font-size:clamp(30px,4.4vw,52px);line-height:1.04;letter-spacing:-.045em}
+.sec-h em,.dark .sec-h em{font-family:inherit;font-style:normal;font-weight:600;font-size:1em;letter-spacing:inherit;background-image:linear-gradient(to right,#c96a14 0%,#f29b1e 12.5%,#ffe066 32.5%,#fff8d6 50%,#ffc929 67.5%,#f29b1e 87.5%,#c96a14 100%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:shiny 6s linear infinite;padding-right:.04em}
+.sec-p,.dark .sec-p{margin-top:18px;color:rgba(255,255,255,.62);line-height:1.6}
+
+/* vidro líquido (liquid-glass) */
+.glass,.card,.step,.results,.panel,.crea,.cta-card,.scene-card{position:relative}
+.card,.results,.panel,.scene-card,.cta-card{background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:0;box-shadow:inset 0 1px 1px rgba(255,255,255,.1),0 30px 80px rgba(0,0,30,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.card::before,.results::before,.panel::before,.scene-card::after,.cta-card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;pointer-events:none;z-index:4;background:linear-gradient(180deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,.13) 20%,rgba(255,255,255,0) 40%,rgba(255,255,255,0) 60%,rgba(255,255,255,.13) 80%,rgba(255,255,255,.42) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box exclude,linear-gradient(#fff 0 0)}
+
+/* serviços */
+.card{border-radius:22px;overflow:hidden}
+.card:hover{transform:translateY(-8px);box-shadow:inset 0 1px 1px rgba(255,255,255,.14),0 34px 80px rgba(0,0,30,.55),0 0 0 1px rgba(255,201,41,.25)}
+.media{border-radius:0;margin:-30px -30px 24px}
+.ico{border:1px solid rgba(255,201,41,.3);background:linear-gradient(145deg,rgba(255,201,41,.18),rgba(255,255,255,.03))}
+.card h3{color:#fff}
+.card p{color:rgba(255,255,255,.62)}
+.card ul{color:rgba(255,255,255,.8)}
+
+/* simulador: coluna com cena solar + resultado em vidro */
+.res-col{display:grid;gap:18px}
+.scene-card{border-radius:24px;overflow:hidden}
+.sim-scene{height:250px;display:flex;align-items:flex-end;justify-content:flex-end;gap:10px;padding:0 22px}
+.sim-bubble{position:relative;z-index:3;align-self:center;margin-bottom:40px;max-width:230px}
+.sim-av{position:relative;z-index:3;height:230px;width:auto;margin-bottom:4px;transform-origin:50% 100%;animation:bob 4.6s ease-in-out infinite;filter:drop-shadow(0 14px 16px rgba(0,0,20,.6))}
+.results{color:#fff;border-radius:24px}
+.results h3,.results .fine,.bar,.metrics small{color:rgba(255,255,255,.6)}
+.hero-num{background:linear-gradient(100deg,#fff 0%,#fff3c4 40%,#ffc929 70%,#f29b1e);-webkit-background-clip:text;background-clip:text}
+.hero-num small{-webkit-text-fill-color:rgba(255,255,255,.55)}
+.bar .track{background:rgba(255,255,255,.1)}
+.bar b{color:#fff}
+.bar.now .fill{background:linear-gradient(90deg,#6d70b8,#b4b7e6)}
+.metrics div{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px}
+.metrics strong{color:var(--cream)}
+.panel{border-radius:24px}
+
+/* como funciona: cartões de vidro com número em degradê */
+.step{padding:26px 22px 24px;border:0;border-radius:20px;overflow:hidden;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+.step::before{font-family:inherit;font-style:normal;font-weight:600;font-size:44px;letter-spacing:-.05em;background:linear-gradient(120deg,#ffe066,#f29b1e);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.step::after{top:0}
+.step h3{color:#fff}
+.step p{color:rgba(255,255,255,.62)}
+
+/* confiança: palco com cena solar atrás do David */
+.stage{min-height:560px;justify-content:flex-start;padding-top:0}
+.stage-card{position:absolute;left:0;right:0;top:44px;bottom:0;border-radius:28px}
+.stage .bubble{position:relative;z-index:5}
+.avwrap{position:relative;z-index:3;margin-top:auto;place-items:end center}
+.avwrap img.av{width:min(230px,70%)}
+.avwrap .shadow{bottom:4px;z-index:-1}
+.crea{border-radius:20px}
+
+/* dúvidas */
+details{background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.1);border-radius:16px;transition:border-color .3s}
+details[open]{border-color:rgba(255,201,41,.35)}
+summary{color:#fff}
+details p{color:rgba(255,255,255,.65)}
+
+/* CTA final: cartão de vidro com a cena solar inteira */
+.cta{padding:104px 0;border-top:1px solid rgba(255,255,255,.07)}
+.cta-card{border-radius:32px;overflow:hidden;min-height:640px;text-align:center}
+.cta-card .scene{--g:34%}
+.cta-in{position:relative;z-index:3;padding:76px 32px 0;max-width:760px;margin:0 auto}
+.cta-in .sec-h{margin-inline:auto}
+.cta-in .sec-p{margin-inline:auto}
+.cta-in .hero-actions{justify-content:center}
+.cta-card .cta-av{position:absolute;z-index:3;right:9%;bottom:3%;height:46%;width:auto;margin:0}
+footer{background:#02021a;border-top:1px solid rgba(255,255,255,.07)}
+
+/* ---------- cena solar reutilizável ---------- */
+.scene{--g:36%;--sx:50%;--sun:200px;position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:0}
+.sc-sky{position:absolute;left:0;right:0;top:0;bottom:var(--g);overflow:hidden;background:linear-gradient(180deg,#02021a 0%,#06063f 36%,#12116b 62%,#33287a 80%,#8a4a52 93%,#e08a2c 100%)}
+.sc-stars{position:absolute;inset:0 0 40% 0;opacity:.6;animation:twinkle 5s ease-in-out infinite alternate;background-image:radial-gradient(1.2px 1.2px at 9% 20%,#fff,transparent),radial-gradient(1px 1px at 22% 58%,#fff,transparent),radial-gradient(1.3px 1.3px at 35% 14%,#fff,transparent),radial-gradient(1px 1px at 58% 34%,rgba(255,255,255,.8),transparent),radial-gradient(1.3px 1.3px at 73% 12%,#fff,transparent),radial-gradient(1px 1px at 88% 44%,#fff,transparent),radial-gradient(1.1px 1.1px at 95% 18%,#fff,transparent)}
+.sc-rays{position:absolute;left:var(--sx);bottom:0;width:1500px;height:1500px;margin:0 0 -750px -750px;background:repeating-conic-gradient(from 0deg,rgba(255,214,120,.1) 0 2.5deg,transparent 2.5deg 11deg);-webkit-mask:radial-gradient(circle,#000 5%,transparent 50%);mask:radial-gradient(circle,#000 5%,transparent 50%);animation:spin 180s linear infinite}
+.sc-halo{position:absolute;left:var(--sx);bottom:0;width:900px;height:380px;margin:0 0 -190px -450px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,190,80,.5),rgba(242,155,30,.15) 45%,transparent);animation:breathe 7s ease-in-out infinite}
+.sc-sun{position:absolute;left:var(--sx);bottom:0;width:var(--sun);height:var(--sun);margin:0 0 calc(var(--sun) / -2) calc(var(--sun) / -2);border-radius:50%;background:radial-gradient(circle,#fffbe6 0%,#ffe680 20%,#ffc929 36%,#f29b1e 54%,rgba(242,155,30,0) 71%);animation:breathe 6s ease-in-out infinite}
+.sc-ground{position:absolute;left:0;right:0;bottom:0;width:100%;height:var(--g);display:block}
+.sc-sheen{animation:scSheen 7s linear infinite}
+@keyframes scSheen{from{transform:translateX(-200px)}to{transform:translateX(900px)}}
+
+@media(max-width:1000px){
+  .results{margin-top:0}
+  .stage{min-height:520px}
+}
+@media(max-width:560px){
+  .sim-scene{height:220px;padding:0 12px}
+  .sim-bubble{max-width:180px;font-size:12.5px;margin-bottom:30px}
+  .sim-av{height:196px}
+  .stage{min-height:480px}
+  .cta{padding:72px 0}
+  .cta-card{min-height:760px;border-radius:26px}
+  .cta-in{padding:52px 20px 0}
+  .cta-card .cta-av{right:50%;margin-right:-60px;height:200px;bottom:4%}
+  .cta-card .scene{--g:26%}
+}
+
+/* ---------- motion do David, balões e interações (JS) ---------- */
+.js-motion .hero-av,.js-motion .ds-av,.js-motion .sim-av,.js-motion .avwrap img.av,.js-motion .cta-av{animation:none;transform-origin:50% 100%;will-change:transform,opacity}
+.js-motion .bubble{will-change:transform,opacity}
+.bubble .w{display:inline-block}
+.bubble.talk .w{animation:wIn .6s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i) * 32ms)}
+@keyframes wIn{from{opacity:0;transform:translateY(.5em);filter:blur(4px)}}
+/* títulos: palavra por palavra */
+.sec-h.words .w{display:inline-block;opacity:0;transform:translateY(.55em);filter:blur(8px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1),filter .9s cubic-bezier(.16,1,.3,1);transition-delay:calc(var(--i) * 55ms + .08s)}
+.sec-h.words.wi .w{opacity:1;transform:none;filter:none}
+/* cena abre em círculo a partir do sol */
+.js-motion .scene{clip-path:circle(0% at var(--sx) calc(100% - var(--g)));transition:clip-path 1.6s cubic-bezier(.16,1,.3,1)}
+.js-motion .scene.on{clip-path:circle(150% at var(--sx) calc(100% - var(--g)))}
+.js-motion .sc-sun{transition:translate 2s cubic-bezier(.16,1,.3,1) .25s}
+.js-motion .scene:not(.on) .sc-sun{translate:0 55%}
+/* luz no cursor */
+.appwin{position:relative}
+.spot{position:absolute;inset:0;z-index:2;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .45s;mix-blend-mode:screen;background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(255,214,140,.11),transparent 45%)}
+:hover>.spot{opacity:1}
+/* botão elástico */
+.magnet{transition:background .35s,border-color .35s,box-shadow .35s,transform .35s var(--ease),translate .7s cubic-bezier(.34,1.56,.64,1)}
+/* balão do David na chamada final */
+.cta-bubble{position:absolute;z-index:4;right:calc(9% + 138px);bottom:29%;max-width:240px;text-align:left}
+@media(max-width:560px){.cta-bubble{display:none}}
 /* ---------- motion ---------- */
 .appear{animation-duration:1.05s;animation-fill-mode:both;animation-timing-function:var(--ease);animation-delay:var(--d,.08s)}
 .appear.is-in{animation:none;opacity:1;transform:none}
@@ -449,7 +604,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
 }
 </style>
 </head>
-<body style="background:#08084f;color:#fff">
+<body style="background:#03031c;color:#fff">
+<div class="site-guides" aria-hidden="true"></div>
 
 <!-- ================= HEADER ================= -->
 <header class="header" id="header">
@@ -520,6 +676,10 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   <div class="hero-low">
     <div class="pv-field" aria-hidden="true"><div class="plane"></div></div>
     <div class="wrap">
+      <div class="hero-david" aria-hidden="true">
+        <div class="bubble tr" id="heroBubble">Oi! Sou o David, assistente virtual da CD Solar. Arraste a barra e veja quanto você economiza.</div>
+        <img class="hero-av" src="assets/avatar-wave.png" alt="" width="278" height="569">
+      </div>
       <div class="appwin appear a-rise" style="--d:1.1s">
         <div class="appbar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="apptitle">CD Solar — Simulador rápido</span><span></span></div>
         <div class="appbody">
@@ -537,15 +697,12 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
             <p class="fine">Estimativa. A proposta final considera sua fatura real.</p>
           </aside>
           <div class="appside">
-            <div class="ds-head"><i></i>David · assistente virtual</div>
-            <div class="ds-stage">
-              <div class="bubble tr" id="heroBubble">Oi! Sou o David, assistente virtual da CD Solar. Arraste a barra e veja quanto você economiza.</div>
-              <img class="ds-av" src="assets/avatar-wave.png" alt="" width="278" height="569">
-            </div>
+            <div class="ds-head"><i></i>Por que a CD Solar</div>
             <ul class="ds-list">
               <li>Projeto sob medida para o seu consumo</li>
               <li>Homologação na distribuidora por nossa conta</li>
               <li>Empresa registrada no CREA</li>
+              <li>Atendimento em Mortugaba-BA e região</li>
             </ul>
           </div>
         </div>
@@ -557,7 +714,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
 <!-- ================= SERVIÇOS ================= -->
 <section class="light pad" id="servicos">
   <div class="wrap">
-    <span class="eyebrow reveal">O que fazemos</span>
+    <span class="eyebrow reveal">O que fazemos <small>do projeto ao suporte</small></span>
     <h2 class="sec-h reveal" style="--d:.08s">Soluções solares do <em>projeto</em> à instalação.</h2>
     <p class="sec-p reveal" style="--d:.14s">Um só parceiro cuida de tudo: dimensionamento, equipamentos, instalação, homologação na distribuidora e acompanhamento depois da obra.</p>
     <div class="cards">
@@ -664,7 +821,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
 <!-- ================= SIMULADOR + ORÇAMENTO ================= -->
 <section class="dark pad" id="orcamento">
   <div class="wrap">
-    <span class="eyebrow reveal">Simulador e orçamento</span>
+    <span class="eyebrow reveal">Simulador e orçamento <small>resultado na hora</small></span>
     <h2 class="sec-h reveal" style="--d:.08s">Veja quanto vai <em>economizar</em> e peça seu orçamento.</h2>
     <p class="sec-p reveal" style="--d:.14s">Escolha o tipo de projeto, ajuste o valor e receba os números na hora. Para enviar o pedido, é só informar seu nome e WhatsApp.</p>
 
@@ -750,11 +907,13 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
         </form>
       </div>
 
+      <div class="res-col">
+      <div class="scene-card sim-scene reveal" aria-hidden="true">
+        <div class="scene" data-scene style="--sx:26%;--g:40%;--sun:150px"></div>
+        <div class="bubble tr sim-bubble"><b>Estes números são uma estimativa.</b> Envie seu pedido e montamos a proposta exata para o seu caso.</div>
+        <img class="sim-av" src="assets/avatar-point.png" alt="" width="290" height="574" loading="lazy">
+      </div>
       <div class="results reveal" style="--d:.12s" id="results" aria-live="polite">
-        <div class="guide sim-guide" aria-hidden="true">
-          <div class="bubble tr"><b>Estes números são uma estimativa.</b> Envie seu pedido e montamos a proposta exata para o seu caso.</div>
-          <div class="gav"><img src="assets/avatar-point.png" alt="" width="290" height="574" loading="lazy"></div>
-        </div>
         <h3 id="resTitle">Economia estimada por mês</h3>
         <div class="hero-num" id="rMonth">R$ 0</div>
         <div class="bars">
@@ -772,6 +931,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
         </div>
         <p class="fine" style="margin-top:18px">Estimativa baseada na irradiação média da região, tarifa média da distribuidora e valores médios de mercado. Os números finais dependem da análise da sua fatura e de uma visita técnica.</p>
       </div>
+      </div>
     </div>
   </div>
 </section>
@@ -779,7 +939,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
 <!-- ================= COMO FUNCIONA ================= -->
 <section class="light pad" id="como-funciona">
   <div class="wrap">
-    <span class="eyebrow reveal">Como funciona</span>
+    <span class="eyebrow reveal">Como funciona <small>4 etapas</small></span>
     <h2 class="sec-h reveal" style="--d:.08s">Do primeiro contato ao <em>sol</em> trabalhando por você.</h2>
     <div class="steps">
       <div class="step reveal" style="--d:.05s"><h3>Simule e peça</h3><p>Use o simulador e envie seus dados pelo WhatsApp em menos de um minuto.</p></div>
@@ -794,15 +954,16 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
 <section class="dark pad trust" id="confianca">
   <div class="wrap trust-grid">
     <div class="stage reveal" aria-hidden="true">
+      <div class="scene-card stage-card"><div class="scene" data-scene style="--sx:78%;--g:32%;--sun:170px"></div></div>
       <div class="bubble td">Pode confiar: a CD Solar tem registro no CREA. ✅</div>
       <div class="avwrap">
-        <div class="halo"></div><div class="ring"></div>
+        
         <img class="av" src="assets/avatar-clipboard.png" alt="" width="264" height="577" loading="lazy">
         <div class="shadow"></div>
       </div>
     </div>
     <div>
-      <span class="eyebrow reveal">Segurança e confiança</span>
+      <span class="eyebrow reveal">Segurança e confiança <small>CREA Nº 0010377514</small></span>
       <h2 class="sec-h reveal" style="--d:.08s">Empresa <em>registrada</em> no CREA.</h2>
       <div class="crea reveal" style="--d:.14s">
         <svg class="seal" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32 4 10 12v18c0 14 9 24 22 30 13-6 22-16 22-30V12z" fill="currentColor"/><path d="m21 32 8 8 15-17" stroke="#10106e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -823,7 +984,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
 <!-- ================= FAQ ================= -->
 <section class="light pad" id="duvidas">
   <div class="wrap">
-    <span class="eyebrow reveal">Dúvidas frequentes</span>
+    <span class="eyebrow reveal">Dúvidas frequentes <small>respostas rápidas</small></span>
     <h2 class="sec-h reveal" style="--d:.08s">Respostas <em>rápidas</em> antes de começar.</h2>
     <div class="faq">
       <details class="reveal"><summary>Funciona em dia nublado ou à noite?</summary><p>Em dia nublado o sistema ainda gera, só que menos. À noite, você usa a energia da rede e paga com os créditos que o sistema acumulou durante o dia.</p></details>
@@ -838,16 +999,22 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
 </section>
 
 <!-- ================= CTA FINAL ================= -->
-<section class="dark cta">
-  <div class="sunglow"></div>
+<section class="cta" id="contato">
   <div class="wrap">
-    <img class="cta-av reveal" src="assets/avatar-front.png" alt="" width="246" height="575" loading="lazy" aria-hidden="true">
-    <h2 class="sec-h reveal">Pronto para pagar <em>menos</em> pela energia?</h2>
-    <p class="sec-p reveal" style="--d:.08s;margin-inline:auto">Fale com a CD Solar e receba uma proposta sem compromisso.</p>
-    <div class="hero-actions reveal" style="--d:.15s">
-      <a class="btn btn-solid" href="#orcamento">Simular minha economia</a>
-      <a class="btn btn-ghost btn-wa" href="#" data-wa="Olá! Gostaria de um orçamento de energia solar."><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg> Chamar no WhatsApp</a>
-      <a class="btn btn-ghost" href="https://www.instagram.com/cd_solar" target="_blank" rel="noopener">Instagram @cd_solar</a>
+    <div class="cta-card reveal">
+      <div class="scene" data-scene style="--sx:20%;--sun:220px"></div>
+      <div class="cta-in">
+        <span class="eyebrow">Fale com a CD Solar <small>sem compromisso</small></span>
+        <h2 class="sec-h">Pronto para pagar <em>menos</em> pela energia?</h2>
+        <p class="sec-p">Fale com a CD Solar e receba uma proposta sem compromisso.</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#orcamento">Simular minha economia</a>
+          <a class="btn btn-ghost btn-wa" href="#" data-wa="Olá! Gostaria de um orçamento de energia solar."><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg> Chamar no WhatsApp</a>
+          <a class="btn btn-ghost" href="https://www.instagram.com/cd_solar" target="_blank" rel="noopener">Instagram @cd_solar</a>
+        </div>
+      </div>
+      <div class="bubble tr cta-bubble" aria-hidden="true">Vamos colocar o sol para trabalhar por você? ☀️</div>
+      <img class="cta-av" src="assets/avatar-front.png" alt="" width="246" height="575" loading="lazy" aria-hidden="true">
     </div>
   </div>
 </section>
@@ -869,6 +1036,49 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-wa" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.66.15-.2.3-.76.96-.93 1.15-.17.2-.34.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.64-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.34.44-.51.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.66-1.6-.9-2.18-.24-.57-.48-.5-.66-.5h-.56c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.23 1.36.2 1.88.12.57-.09 1.75-.72 2-1.41.24-.7.24-1.29.17-1.41-.07-.13-.27-.2-.57-.35ZM12.04 21.5h-.01a9.45 9.45 0 0 1-4.8-1.31l-.34-.2-3.57.94.95-3.48-.22-.36a9.44 9.44 0 0 1-1.45-5.03c0-5.22 4.25-9.47 9.47-9.47 2.53 0 4.9.99 6.69 2.78a9.4 9.4 0 0 1 2.77 6.7c0 5.22-4.25 9.47-9.49 9.47Zm8.06-17.54A11.3 11.3 0 0 0 12.04.6C5.8.6.72 5.67.72 11.92c0 2 .52 3.95 1.52 5.67L.6 23.4l5.95-1.56a11.3 11.3 0 0 0 5.48 1.4h.01c6.24 0 11.32-5.08 11.32-11.32 0-3.02-1.18-5.86-3.26-7.96Z"/></symbol></defs></svg>
 
+<!-- cena solar: chão com fileiras de placas (clonada pelo script em cada [data-scene]) -->
+<template id="tpl-ground">
+<svg class="sc-ground" viewBox="0 0 600 110" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2552"/><stop offset=".2" stop-color="#110d40"/><stop offset="1" stop-color="#03031c"/></linearGradient>
+    <radialGradient id="gGlow" cx=".5" cy="0" r=".55"><stop offset="0" stop-color="#ffb347" stop-opacity=".55"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gPv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a8ff5"/><stop offset=".5" stop-color="#2149ad"/><stop offset="1" stop-color="#102a72"/></linearGradient>
+    <pattern id="gC1" width="5" height="3" patternUnits="userSpaceOnUse"><path d="M5 0V3M0 3H5" stroke="#b5d0ff" stroke-opacity=".35" stroke-width=".4" fill="none"/></pattern>
+    <pattern id="gC2" width="9" height="4.5" patternUnits="userSpaceOnUse"><path d="M9 0V4.5M0 4.5H9" stroke="#b5d0ff" stroke-opacity=".35" stroke-width=".6" fill="none"/></pattern>
+    <pattern id="gC3" width="16" height="8" patternUnits="userSpaceOnUse"><path d="M16 0V8M0 8H16" stroke="#b5d0ff" stroke-opacity=".38" stroke-width=".9" fill="none"/></pattern>
+    <pattern id="gG1" width="40" height="10" patternUnits="userSpaceOnUse"><rect x="39" width="1" height="10" fill="#06062a"/></pattern>
+    <pattern id="gG2" width="72" height="20" patternUnits="userSpaceOnUse"><rect x="70" width="2" height="20" fill="#06062a"/></pattern>
+    <pattern id="gG3" width="128" height="50" patternUnits="userSpaceOnUse"><rect x="124" width="4" height="50" fill="#06062a"/></pattern>
+    <linearGradient id="gSheen" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#ffe2a0" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <clipPath id="gRows">
+      <polygon points="-10,5 610,5 612,11 -12,11"/>
+      <polygon points="-20,19 620,19 630,36 -30,36"/>
+      <polygon points="-40,52 640,52 664,96 -64,96"/>
+    </clipPath>
+  </defs>
+  <rect width="600" height="110" fill="url(#gGround)"/>
+  <ellipse cx="300" cy="0" rx="360" ry="40" fill="url(#gGlow)"/>
+  <g stroke="#0a0a33" stroke-width="1"><path d="M30 11v4M110 11v4M190 11v4M270 11v4M350 11v4M430 11v4M510 11v4M590 11v4"/></g>
+  <polygon points="-10,5 610,5 612,11 -12,11" fill="url(#gPv)"/>
+  <polygon points="-10,5 610,5 612,11 -12,11" fill="url(#gC1)"/>
+  <polygon points="-10,5 610,5 612,11 -12,11" fill="url(#gG1)"/>
+  <g stroke="#0a0a33" stroke-width="2"><path d="M20 36v7M92 36v7M164 36v7M236 36v7M308 36v7M380 36v7M452 36v7M524 36v7M596 36v7"/></g>
+  <polygon points="-20,19 620,19 630,36 -30,36" fill="url(#gPv)"/>
+  <polygon points="-20,19 620,19 630,36 -30,36" fill="url(#gC2)"/>
+  <polygon points="-20,19 620,19 630,36 -30,36" fill="url(#gG2)"/>
+  <path d="M-20 19H620" stroke="#cfe0ff" stroke-opacity=".45" stroke-width=".8"/>
+  <g fill="#0a0a33"><rect x="36" y="95" width="5" height="15"/><rect x="164" y="95" width="5" height="15"/><rect x="292" y="95" width="5" height="15"/><rect x="420" y="95" width="5" height="15"/><rect x="548" y="95" width="5" height="15"/></g>
+  <polygon points="-40,52 640,52 664,96 -64,96" fill="url(#gPv)"/>
+  <polygon points="-40,52 640,52 664,96 -64,96" fill="url(#gC3)"/>
+  <polygon points="-40,52 640,52 664,96 -64,96" fill="url(#gG3)"/>
+  <path d="M-40 52H640" stroke="#dbe8ff" stroke-opacity=".55" stroke-width="1.2"/>
+  <g clip-path="url(#gRows)">
+    <ellipse cx="300" cy="58" rx="230" ry="20" fill="#ffb347" opacity=".2"/>
+    <rect class="sc-sheen" x="0" y="0" width="180" height="110" fill="url(#gSheen)"/>
+  </g>
+</svg>
+</template>
+
 <script>
 (function(){
   /* ===== CONFIGURAÇÃO — ajuste aqui ===== */
@@ -886,6 +1096,11 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   };
 
   document.documentElement.classList.add("js");
+  /* cena solar (céu + sol + fileiras de placas) atrás do David */
+  var GROUND=document.getElementById("tpl-ground").innerHTML;
+  Array.prototype.forEach.call(document.querySelectorAll("[data-scene]"),function(el){
+    el.innerHTML="<div class=\"sc-sky\"><div class=\"sc-stars\"></div><div class=\"sc-rays\"></div><div class=\"sc-halo\"></div><div class=\"sc-sun\"></div></div>"+GROUND;
+  });
   var $ = function(s,c){return (c||document).querySelector(s)};
   var $$ = function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
   var brl = function(n){return "R$ "+Math.round(n).toLocaleString("pt-BR")};
@@ -1021,8 +1236,14 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
     if(typeof step!=="undefined"&&step===3) renderReview();
     return r;
   }
-  bill.addEventListener("input",function(){ vals[current().m]=+bill.value; update(); });
-  num.addEventListener("input",function(){
+  bill.addEventListener("input",function(){ vals[current().m]=+bill.value; update(); simTalk(); });
+  /* o David do simulador comenta o valor que a pessoa está ajustando */
+  function simTalk(){
+    var d=snapshot();
+    davidSay("sim", d.pump ? "Com a bomba solar, a economia estimada é de <b>"+brl(d.r.mes)+" por mês.</b>" :
+      "Com uma conta de <b>"+brl(d.v)+"</b>, a economia estimada é de <b>"+brl(d.r.mes)+" por mês.</b>");
+  }
+  num.addEventListener("input",function(){ setTimeout(simTalk,0);
     var n=Math.max(0,Math.min(99999,Math.round(+num.value||0))); vals[current().m]=n; update();
   });
   num.addEventListener("blur",function(){ if(!(vals[current().m]>0)){ vals[current().m]=CFG[current().m].min; } num.value=vals[current().m]; update(); });
@@ -1031,7 +1252,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
     if(to==="kwh") vals.kwh=toKwh(vals.brl); else vals.brl=toBrl(vals.kwh);
     mode=to; update();
   })});
-  $$(".tab").forEach(function(b){b.addEventListener("click",function(){
+  $$(".tab").forEach(function(b){b.addEventListener("click",function(){ setTimeout(simTalk,0);
     $$(".tab").forEach(function(x){x.setAttribute("aria-selected",x===b)});
     type=b.dataset.type;
     if(mode==="brl") vals.kwh=toKwh(vals.brl); else vals.brl=toBrl(vals.kwh);
@@ -1052,9 +1273,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   var hb=$("#heroBubble"),hbT;
   qBill.addEventListener("input",function(){
     var v=+qBill.value, r=calcSolar(v,"resid");
-    hb.textContent = "Com solar você economiza cerca de "+brl(r.mes)+" por mês! 🎉";
-    hb.style.animation="none"; hb.style.opacity=1;
-    clearTimeout(hbT);
+    davidSay("hero","Com solar você economiza cerca de <b>"+brl(r.mes)+"</b> por mês! 🎉");
   });
 
   var labels={resid:"Residência",comercial:"Comércio",rural:"Propriedade rural",bomba:"Bomba solar"};
@@ -1241,6 +1460,183 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
       try{ fetch(CRM_WEBHOOK,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain"},body:JSON.stringify(lead)}) }catch(err){}
     }
   });
+
+
+  /* =====================================================================
+     MOTION — David, balões e detalhes de interação
+     (física com mola, revelar palavras, palavras que trocam, máscara que
+     revela, luz no cursor e botão elástico; JavaScript puro)
+     ===================================================================== */
+  var MOT=null;
+  function davidSay(id,html){ if(MOT){ MOT.react(id,html); return } var b=document.querySelector('[data-david="'+id+'"]'); if(b) b.innerHTML=html; }
+  (function(){
+    if(reduce) return;
+    var root=document.documentElement; root.classList.add("js-motion");
+    var fine=window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+    var EASE="cubic-bezier(.16,1,.3,1)";
+
+    /* quebra o texto em palavras (o <em> em degradê fica inteiro) */
+    function splitWords(el){
+      var out=[];
+      (function walk(node){
+        Array.prototype.slice.call(node.childNodes).forEach(function(n){
+          if(n.nodeType===3){
+            var frag=document.createDocumentFragment();
+            n.textContent.split(/(\s+)/).forEach(function(p){
+              if(!p) return;
+              if(/^\s+$/.test(p)){ frag.appendChild(document.createTextNode(p)); return }
+              var s=document.createElement("span"); s.className="w"; s.textContent=p; frag.appendChild(s); out.push(s);
+            });
+            n.parentNode.replaceChild(frag,n);
+          } else if(n.nodeType===1){
+            if(n.tagName==="EM"||n.tagName==="BR"){ if(n.tagName==="BR") return; var s=document.createElement("span"); s.className="w"; n.parentNode.replaceChild(s,n); s.appendChild(n); out.push(s); }
+            else walk(n);
+          }
+        });
+      })(el);
+      out.forEach(function(s,k){ s.style.setProperty("--i",k) });
+      return out;
+    }
+
+    /* títulos das seções: palavras sobem com desfoque, uma a uma */
+    var hio=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add("wi"); hio.unobserve(e.target) }
+    })},{threshold:.25});
+    $$(".sec-h").forEach(function(h){ splitWords(h); h.classList.add("words"); hio.observe(h) });
+
+    /* cenas solares: abrem em círculo a partir do sol, e o sol sobe */
+    /* observa o cartão em volta (a cena fechada em 0% não conta como visível) */
+    var sio=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){ e.target._scene.classList.add("on"); sio.unobserve(e.target) }
+    })},{threshold:.15});
+    $$("[data-scene]").forEach(function(s){ var p=s.parentElement; p._scene=s; sio.observe(p) });
+    function sweepScenes(){ $$("[data-scene]:not(.on)").forEach(function(s){ var r=s.parentElement.getBoundingClientRect();
+      if(r.top<innerHeight-80 && r.bottom>80) s.classList.add("on") }) }
+    window.addEventListener("scroll",sweepScenes,{passive:true}); setTimeout(sweepScenes,1500);
+
+    /* ---------- molas ---------- */
+    function S(k,d,x){ return {x:x||0,v:0,t:x||0,k:k,d:d} }
+    function step(s,dt){ var a=-s.k*(s.x-s.t)-s.d*s.v; s.v+=a*dt; s.x+=s.v*dt }
+    function rest(s){ return Math.abs(s.x-s.t)<.002 && Math.abs(s.v)<.002 }
+
+    var mouse={x:-1,y:-1};
+    if(fine) window.addEventListener("pointermove",function(e){ mouse.x=e.clientX; mouse.y=e.clientY; kick() },{passive:true});
+    window.addEventListener("scroll",function(){ kick() },{passive:true});
+
+    /* balão: troca o texto com palavras que entram e redimensiona com suavidade */
+    function say(c,html,instant){
+      var b=c.b; if(!b||b._html===html) return; b._html=html;
+      var ow=b.offsetWidth, oh=b.offsetHeight;
+      b.innerHTML=html;
+      if(!instant){ splitWords(b); b.classList.remove("talk"); void b.offsetWidth; b.classList.add("talk") }
+      if(c.shown && b.animate){
+        var nw=b.offsetWidth, nh=b.offsetHeight;
+        if(Math.abs(nw-ow)+Math.abs(nh-oh)>2) b.animate([{width:ow+"px",height:oh+"px"},{width:nw+"px",height:nh+"px"}],{duration:480,easing:EASE});
+      }
+    }
+
+    var chars=[], running=false, last=0, t0=performance.now();
+    function add(o){
+      if(!o.av||!o.host) return;
+      var c={id:o.id,av:o.av,b:o.b,host:o.host,msgs:o.msgs,delay:o.delay||0,mi:0,lock:0,vis:false,entered:false,shown:false,phase:Math.random()*6,
+        enter:S(70,12,1),hop:S(300,15,0),lean:S(55,11,0),pop:S(190,13,0),bx:S(60,10,0),by:S(60,10,0)};
+      c.av.style.opacity="0";
+      if(c.b){ c.b.setAttribute("data-david",o.id); c.b.style.transformOrigin=o.origin||"100% 40%"; c.b.style.opacity="0"; c.b.style.transform="scale(0)" }
+      chars.push(c); cio.observe(c.host);
+    }
+    function nextMsg(c){ if(!c.b||!c.msgs) return; say(c,c.msgs[c.mi%c.msgs.length]); c.mi++; c.pop.v-=1.2; kick() }
+    function enterChar(c){
+      if(c.entered) return; c.entered=true;
+      setTimeout(function(){
+        c.enter.t=0; kick();
+        setTimeout(function(){ c.pop.t=1; c.shown=true;
+          if(c.b){ c.b._html=null; if(c.pending){ say(c,c.pending); c.pending=null } else nextMsg(c) }
+          kick() },480);
+      },c.delay);
+    }
+    var cio=new IntersectionObserver(function(es){es.forEach(function(e){
+      chars.forEach(function(c){
+        if(c.host!==e.target) return;
+        c.vis=e.isIntersecting;
+        if(c.vis && e.intersectionRatio>=.12) enterChar(c);
+        if(c.vis) kick();
+      });
+    })},{threshold:[0,.12,.3]});
+    /* reforço por posição: entra assim que 120 px do palco aparecem, mesmo se o observador atrasar */
+    function sweepChars(){ chars.forEach(function(c){ if(c.entered) return; var r=c.host.getBoundingClientRect();
+      if(r.top<innerHeight-120 && r.bottom>120){ c.vis=true; enterChar(c) } }) }
+    window.addEventListener("scroll",sweepChars,{passive:true}); setTimeout(sweepChars,1200); setTimeout(sweepChars,3000);
+    /* a cada 6,5 s o David troca a fala (se ninguém mexeu no simulador há pouco) */
+    setInterval(function(){ chars.forEach(function(c){ if(c.vis&&c.shown&&!document.hidden&&Date.now()>c.lock) nextMsg(c) }) },6500);
+
+    function frame(now){
+      var dt=Math.min((now-last)/1000,1/30); last=now;
+      var t=(now-t0)/1000, any=false;
+      chars.forEach(function(c){
+        var springs=[c.enter,c.hop,c.lean,c.pop,c.bx,c.by];
+        if(!c.vis && springs.every(rest)) return;
+        any=true;
+        var r=c.host.getBoundingClientRect();
+        var par=Math.max(-14,Math.min(14,((r.top+r.height/2)-innerHeight/2)/innerHeight*-16));  /* parallax: anda mais devagar que a página (com limite) */
+        var fl=Math.sin(t*1.35+c.phase)*5;                                    /* flutuar */
+        var br=1+Math.sin(t*2.7+c.phase)*.009;                                /* respirar */
+        if(fine&&mouse.x>=0){ var ar=c.av.getBoundingClientRect(); c.lean.t=Math.max(-1,Math.min(1,(mouse.x-(ar.left+ar.width/2))/(innerWidth*.45)))*4 }
+        else c.lean.t=Math.sin(t*.6+c.phase)*1.4;
+        springs.forEach(function(s){ step(s,dt) });
+        var y=c.enter.x*90+fl+par+c.hop.x;
+        c.av.style.transform="translate3d(0,"+y.toFixed(2)+"px,0) rotate("+c.lean.x.toFixed(2)+"deg) scale("+(2-br).toFixed(4)+","+br.toFixed(4)+")";
+        c.av.style.opacity=Math.max(0,Math.min(1,1-c.enter.x*1.3)).toFixed(3);
+        if(c.b){
+          c.bx.t=c.lean.x*2.4; c.by.t=(fl+par+c.hop.x)*.55;
+          var p=Math.max(0,c.pop.x);
+          c.b.style.transform="translate3d("+c.bx.x.toFixed(2)+"px,"+c.by.x.toFixed(2)+"px,0) rotate("+(-c.lean.x*.35).toFixed(2)+"deg) scale("+p.toFixed(3)+")";
+          c.b.style.opacity=Math.min(1,p*1.6).toFixed(3);
+        }
+      });
+      if(any) requestAnimationFrame(frame); else running=false;
+    }
+    function kick(){ if(running) return; running=true; last=performance.now(); requestAnimationFrame(frame) }
+
+    add({id:"hero",av:$(".hero-av"),b:$("#heroBubble"),host:$(".hero-david"),delay:900,origin:"100% 30%",msgs:[
+      "Oi! Sou o David, assistente virtual da CD Solar. 👋",
+      "Arraste a barra e veja quanto você economiza.",
+      "Gostou do número? Clique em <b>Quero esse orçamento</b>."]});
+    add({id:"sim",av:$(".sim-av"),b:$(".sim-bubble"),host:$(".sim-scene"),origin:"100% 40%",msgs:[
+      "<b>Estes números são uma estimativa.</b> Envie seu pedido e montamos a proposta exata para o seu caso.",
+      "Mude o tipo de projeto ou o valor e eu recalculo na hora.",
+      "São só 3 etapas e o pedido chega no WhatsApp da CD Solar."]});
+    add({id:"crea",av:$(".avwrap img.av"),b:$(".stage .bubble"),host:$(".stage"),origin:"50% 100%",msgs:[
+      "Pode confiar: a CD Solar tem registro no CREA. ✅",
+      "Peça sempre o registro da <b>empresa</b>, não só o do engenheiro.",
+      "Nosso registro: <b>CREA Nº 0010377514</b>."]});
+    add({id:"cta",av:$(".cta-av"),b:$(".cta-bubble"),host:$(".cta-card"),delay:250,origin:"100% 50%",msgs:[
+      "Vamos colocar o sol para trabalhar por você? ☀️",
+      "A proposta é sem compromisso."]});
+
+    MOT={react:function(id,html){
+      chars.forEach(function(c){
+        if(c.id!==id) return;
+        var now=Date.now(), quick=now-(c.lastReact||0)<1200;
+        c.lastReact=now; c.lock=now+9000;
+        if(c.shown) say(c,html,quick); else if(c.b){ c.b.innerHTML=html; c.pending=html }
+        if(!c._hopT||now-c._hopT>650){ c._hopT=now; c.hop.v=-230 }
+        kick();
+      });
+    }};
+
+    /* luz que segue o cursor nos cartões de vidro */
+    if(fine) $$(".card,.step,.results,.panel,.crea,.appwin,.cta-card,.scene-card").forEach(function(el){
+      var s=document.createElement("span"); s.className="spot"; s.setAttribute("aria-hidden","true"); el.appendChild(s);
+      el.addEventListener("pointermove",function(e){ var r=el.getBoundingClientRect(); el.style.setProperty("--mx",(e.clientX-r.left)+"px"); el.style.setProperty("--my",(e.clientY-r.top)+"px") });
+    });
+
+    /* botão elástico: o botão é puxado pelo cursor e volta com mola */
+    if(fine) $$(".hero-actions .btn,.header .btn-cta,#qGo").forEach(function(b){
+      b.classList.add("magnet");
+      b.addEventListener("pointermove",function(e){ var r=b.getBoundingClientRect(); b.style.translate=((e.clientX-r.left-r.width/2)*.22).toFixed(1)+"px "+((e.clientY-r.top-r.height/2)*.32).toFixed(1)+"px" });
+      b.addEventListener("pointerleave",function(){ b.style.translate="0px 0px" });
+    });
+  })();
 
   updQuick(); update();
 })();
