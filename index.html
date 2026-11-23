@@ -174,6 +174,10 @@ section{position:relative}
 .field label{font-size:12.5px}
 .sumline{margin-top:20px;padding:11px 14px;border-radius:10px;background:rgba(255,201,41,.1);border:1px solid rgba(255,201,41,.3);color:var(--cream);font-size:13px;line-height:1.4}
 .formerr{margin-top:14px;font-size:13px;color:#ff9b9b}
+.field input.err,.field select.err{border-color:#ff6b6b!important;background:rgba(255,80,80,.14)!important;box-shadow:0 0 0 3px rgba(255,107,107,.25)!important;animation:shakeErr .35s}
+.field:has(.err) label{color:#ffb4b4;font-weight:600}
+.formerr{padding:10px 12px;border-radius:10px;background:rgba(255,107,107,.12);border:1px solid rgba(255,107,107,.45);color:#ffc2c2!important;line-height:1.4}
+@keyframes shakeErr{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
 .fstep{display:none}.fstep.on{display:block}
 .fprog{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:18px}
 .fprog li{display:block}
@@ -907,12 +911,27 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   });
 
   var labels={resid:"Residência",comercial:"Comércio",rural:"Propriedade rural",bomba:"Bomba solar"};
-  var maskPhone=function(el){el.addEventListener("input",function(){
-    var d=el.value.replace(/\D/g,"").slice(0,11), o=d;
+  /* telefone: aceita +55, 55 e formatos colados; o que vale (revisão, mensagem) é só DDD + número */
+  var normPhone=function(raw){
+    var plus=/^\s*\+/.test(raw), d=String(raw).replace(/\D/g,"");
+    if((d.length>=12||plus) && d.slice(0,2)==="55") d=d.slice(2);
+    return d.slice(0,11);
+  };
+  var fmtPhone=function(d){
+    var o=d;
     if(d.length>2) o="("+d.slice(0,2)+") "+d.slice(2);
     if(d.length>7) o="("+d.slice(0,2)+") "+d.slice(2,d.length>10?7:6)+"-"+d.slice(d.length>10?7:6);
-    el.value=o;
-  })};
+    return o;
+  };
+  var phoneDisp=function(el){ return fmtPhone(normPhone(el.value)) };
+  var maskPhone=function(el){
+    el.addEventListener("input",function(){
+      var raw=el.value;
+      if(/^\s*\+/.test(raw)){ el.value=raw.replace(/[^\d+\s()\-]/g,"").slice(0,24); return }   /* digitando com +55: deixa terminar */
+      el.value=fmtPhone(normPhone(raw));
+    });
+    el.addEventListener("blur",function(){ if(el.value) el.value=phoneDisp(el) });
+  };
   var tel=$("#tel"), indTel=$("#indTel"); maskPhone(tel); maskPhone(indTel);
   $("#indica").addEventListener("change",function(){ $("#indicaBox").classList.toggle("hide",this.value!=="Sim") });
 
@@ -920,7 +939,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   var step=1;
   var F={nome:$("#nome"),tel:tel,cep:$("#cep"),uf:$("#uf"),cidade:$("#cidade"),bairro:$("#bairro"),rua:$("#rua"),numero:$("#numero"),compl:$("#compl"),primeira:$("#primeira"),origem:$("#origem"),indica:$("#indica"),indNome:$("#indNome"),indTel:indTel};
   var STEP_FIELDS={1:[F.nome,F.tel,F.cep,F.uf,F.cidade,F.bairro,F.rua,F.numero,F.compl],2:[F.primeira,F.origem,F.indica,F.indNome,F.indTel]};
-  var digits=function(el){return el.value.replace(/\D/g,"").length};
+  var digits=function(el){return (el===tel||el===indTel ? normPhone(el.value) : el.value.replace(/\D/g,"")).length};
   var waShown="+"+WA_NUMBER.slice(0,2)+" "+WA_NUMBER.slice(2,4)+" "+WA_NUMBER.slice(4,9)+"-"+WA_NUMBER.slice(9);
   $("#waShown").textContent=waShown;
   function invalid(n){
@@ -954,6 +973,12 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
       b.title = ok ? "" : "Preencha os campos obrigatórios da etapa anterior para liberar";
     });
   }
+  function labelOf(el){
+    var l=document.querySelector('label[for="'+el.id+'"]');
+    return l ? l.textContent.replace(/\*/g,"").replace(/\(opcional\)/g,"").trim() : el.id;
+  }
+  function needMsg(bad){ return "Preencha para continuar: "+bad.map(labelOf).join(", ")+"." }
+  function normalizePhones(){ [tel,indTel].forEach(function(el){ if(el.value) el.value=phoneDisp(el) }) }
   function showErr(msg){ var e=$("#formErr"); e.textContent=msg; e.classList.toggle("hide",!msg) }
   function mark(n,bad){ STEP_FIELDS[n].forEach(function(el){el.classList.remove("err")}); bad.forEach(function(el){el.classList.add("err")}) }
   Object.keys(F).forEach(function(k){ ["input","change"].forEach(function(ev){ F[k].addEventListener(ev,function(){ F[k].classList.remove("err"); refreshTabs(); }) }) });
@@ -969,13 +994,13 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   }
   function buildMessage(){
     var d=snapshot(), v=d.v, r=d.r;
-    var ind = F.indica.value==="Sim" ? "Sim — "+F.indNome.value.trim()+" ("+F.indTel.value.trim()+")" : "Não";
+    var ind = F.indica.value==="Sim" ? "Sim — "+F.indNome.value.trim()+" ("+phoneDisp(F.indTel)+")" : "Não";
     var consumo = d.pump ? "Gasto mensal atual (diesel/energia): "+brl(v) :
       "Consumo médio: "+d.kwh.toLocaleString("pt-BR")+" kWh/mês\nConta média: "+brl(v);
     return "Olá, CD Solar! Quero um orçamento.\n\n"+
       "*Dados do cliente*\n"+
       "Nome completo: "+F.nome.value.trim()+"\n"+
-      "WhatsApp: "+F.tel.value.trim()+"\n"+
+      "WhatsApp: "+phoneDisp(F.tel)+"\n"+
       "Endereço: "+enderecoStr()+"\n"+
       "Primeira compra: "+F.primeira.value+"\n"+
       "Conheceu a CD Solar por: "+F.origem.value+"\n"+
@@ -988,9 +1013,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   }
   function renderReview(){
     var d=snapshot(), rows=[
-      ["Nome",F.nome.value.trim()],["WhatsApp",F.tel.value.trim()],["Endereço",enderecoStr()],
+      ["Nome",F.nome.value.trim()],["WhatsApp",phoneDisp(F.tel)],["Endereço",enderecoStr()],
       ["Primeira compra",F.primeira.value],["Conheceu por",F.origem.value],
-      ["Indicação",F.indica.value==="Sim"?F.indNome.value.trim()+" · "+F.indTel.value.trim():"Não"],
+      ["Indicação",F.indica.value==="Sim"?F.indNome.value.trim()+" · "+phoneDisp(F.indTel):"Não"],
       ["Projeto",labels[type]],
       d.pump?["Gasto mensal",brl(d.v)]:["Consumo médio",d.kwh.toLocaleString("pt-BR")+" kWh/mês"],
       ["Conta média",d.pump?"—":brl(d.v)],
@@ -1013,8 +1038,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
     var f=$("#leadForm"); if(f.getBoundingClientRect().top<0) f.scrollIntoView({block:"start",behavior:"smooth"});
   }
   function goNext(){
+    normalizePhones();
     var bad=invalid(step); mark(step,bad);
-    if(bad.length){ showErr("Preencha os campos obrigatórios destacados em vermelho para continuar."); bad[0].focus(); return false }
+    if(bad.length){ showErr(needMsg(bad)); bad[0].focus(); return false }
     showStep(step+1); return true;
   }
   F.cep.addEventListener("input",function(){
@@ -1046,9 +1072,10 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
   $("#leadForm").addEventListener("submit",function(e){
     e.preventDefault();
     if(step<3){ goNext(); return }              /* Enter nas etapas 1 e 2 apenas tenta avançar */
+    normalizePhones();
     for(var n=1;n<=2;n++){                       /* revalida tudo: nada é enviado com obrigatório em branco */
       var bad=invalid(n); mark(n,bad);
-      if(bad.length){ showStep(n); showErr("Faltam campos obrigatórios nesta etapa. Preencha para continuar."); bad[0].focus(); return }
+      if(bad.length){ showStep(n); showErr(needMsg(bad)); bad[0].focus(); return }
     }
     var d=snapshot(), msg=buildMessage();
     window.open(waLink(msg),"_blank","noopener");
@@ -1056,9 +1083,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justif
     /* registro do primeiro lead no CRM (opcional: preencha CRM_WEBHOOK no topo do script) */
     if(CRM_WEBHOOK){
       var lead={data:new Date().toISOString(),nome_completo:F.nome.value.trim(),endereco_completo:enderecoStr(),cep:F.cep.value.trim(),estado:F.uf.value,cidade:F.cidade.value.trim(),bairro:F.bairro.value.trim(),rua:F.rua.value.trim(),numero:F.numero.value.trim(),complemento:F.compl.value.trim(),
-        consumo_medio_kwh:d.pump?null:d.kwh,media_conta_reais:Math.round(d.v),telefone:F.tel.value.trim(),
+        consumo_medio_kwh:d.pump?null:d.kwh,media_conta_reais:Math.round(d.v),telefone:phoneDisp(F.tel),
         veio_por_indicacao:F.indica.value==="Sim",indicado_por:F.indica.value==="Sim"?F.indNome.value.trim():"",
-        telefone_indicacao:F.indica.value==="Sim"?F.indTel.value.trim():"",como_conheceu:F.origem.value,
+        telefone_indicacao:F.indica.value==="Sim"?phoneDisp(F.indTel):"",como_conheceu:F.origem.value,
         primeira_compra:F.primeira.value==="Sim",tipo_projeto:labels[type],economia_mensal_estimada:Math.round(d.r.mes)};
       try{ fetch(CRM_WEBHOOK,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain"},body:JSON.stringify(lead)}) }catch(err){}
     }
