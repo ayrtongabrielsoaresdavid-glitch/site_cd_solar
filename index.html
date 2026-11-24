@@ -306,13 +306,6 @@ section{position:relative}
 .step p{margin-top:6px;font-size:14.5px;color:var(--muted-ink)}
 
 /* faq */
-.faq{margin-top:40px;max-width:820px;display:grid;gap:10px}
-details{border-radius:12px;background:#fff;border:1px solid #e3e5f4;overflow:hidden}
-summary{list-style:none;cursor:pointer;padding:19px 22px;font-weight:600;font-size:16px;letter-spacing:-.015em;display:flex;justify-content:space-between;gap:16px;align-items:center}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-size:24px;font-weight:300;color:var(--amber);transition:transform .3s}
-details[open] summary::after{transform:rotate(45deg)}
-details p{padding:0 22px 20px;color:var(--muted-ink);font-size:15px}
 
 /* cta + footer */
 .cta{text-align:center;padding:96px 0;overflow:hidden}
@@ -484,11 +477,7 @@ section.pad>.wrap{position:relative;z-index:1}
 .avwrap .shadow{bottom:4px;z-index:-1}
 .crea{border-radius:20px}
 
-/* dúvidas */
-details{background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.1);border-radius:16px;transition:border-color .3s}
-details[open]{border-color:rgba(255,201,41,.35)}
-summary{color:#fff}
-details p{color:rgba(255,255,255,.65)}
+/* dúvidas: ver bloco FAQ no fim do CSS */
 
 /* CTA final: cartão de vidro com a cena solar inteira */
 .cta{padding:104px 0;border-top:1px solid rgba(255,255,255,.07)}
@@ -602,6 +591,59 @@ footer{background:#02021a;border-top:1px solid rgba(255,255,255,.07)}
   *,*::before,*::after{transition:none!important;animation:none!important}
   .appear,.js .reveal{opacity:1!important;transform:none!important}
 }
+
+/* =========================================================
+   DÚVIDAS em duas seções (Energia Solar / Bombas Solares)
+   com rolagem com inércia dentro da caixa
+   ========================================================= */
+.faq-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px;align-items:center}
+.faq-rev .faq-grid{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.faq-rev .faq-intro{order:2}
+.faq-intro .btn{margin-top:26px}
+.faq-ico{display:grid;place-items:center;width:54px;height:54px;margin-bottom:22px;border-radius:16px;color:var(--yellow);border:1px solid rgba(255,201,41,.35);background:linear-gradient(145deg,rgba(255,201,41,.18),rgba(255,255,255,.03));animation:faqPulse 3.6s ease-in-out infinite}
+.faq-ico svg{width:26px;height:26px}
+@keyframes faqPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,201,41,.28)}50%{box-shadow:0 0 0 12px rgba(255,201,41,0)}}
+.faq-box{position:relative}
+
+/* a janela: o conteúdo persegue a rolagem (inércia) */
+.js-inercia{position:relative;height:var(--h,340px);max-height:72vh;overflow:hidden;overflow:clip;border-radius:26px;
+  background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.12),0 30px 80px rgba(0,0,30,.4);
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--ft,0px),#000 calc(100% - var(--fb,0px)),transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 var(--ft,0px),#000 calc(100% - var(--fb,0px)),transparent 100%)}
+.js-inercia::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;pointer-events:none;z-index:4;background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.1) 25%,rgba(255,255,255,0) 45%,rgba(255,255,255,.1) 75%,rgba(255,255,255,.42));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box exclude,linear-gradient(#fff 0 0)}
+.js-inercia .trilho{will-change:transform;padding:16px 22px 16px 16px;display:grid;gap:10px}
+.inercia-barra{position:absolute;right:7px;top:14px;bottom:14px;width:4px;border-radius:4px;background:rgba(255,255,255,.1);z-index:5;opacity:0;transition:opacity .3s}
+.js-inercia.rola .inercia-barra{opacity:1}
+.inercia-barra i{position:absolute;left:0;right:0;top:0;height:30%;border-radius:4px;background:linear-gradient(180deg,#ffe066,#f29b1e);box-shadow:0 0 10px rgba(255,201,41,.5);will-change:transform}
+.inercia-dica{display:flex;justify-content:space-between;gap:12px;margin-top:12px;padding:0 6px;font-size:12.5px;color:rgba(255,255,255,.5)}
+.dica-rolar{display:none;align-items:center;gap:7px}
+.dica-rolar::before{content:"";width:10px;height:16px;border-radius:6px;border:1.5px solid rgba(255,201,41,.8);background:linear-gradient(var(--yellow),var(--yellow)) 50% 3px/2px 4px no-repeat;animation:dicaMouse 1.8s ease-in-out infinite}
+@keyframes dicaMouse{50%{background-position:50% 7px}}
+.faq-box.rola .dica-rolar{display:inline-flex}
+
+.qa{border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.1);transition:border-color .3s,background .3s}
+.qa:hover{border-color:rgba(255,255,255,.2)}
+.qa.open{border-color:rgba(255,201,41,.45);background:linear-gradient(160deg,rgba(255,201,41,.08),rgba(255,255,255,.02))}
+.qa h3{margin:0;font-size:inherit;font-weight:inherit}
+.q{width:100%;display:flex;align-items:center;gap:14px;padding:17px 18px;border:0;background:transparent;border-radius:18px;color:#fff;font:inherit;font-size:16px;font-weight:600;letter-spacing:-.015em;line-height:1.35;text-align:left;cursor:pointer}
+.q:focus-visible{outline:2px solid var(--yellow);outline-offset:-2px}
+.qt{flex:1;min-width:0}
+.qi{position:relative;flex:none;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.22);transition:transform .4s var(--ease),background .3s,border-color .3s}
+.qi::before,.qi::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.8px;margin:-.9px 0 0 -6px;border-radius:2px;background:#fff;transition:background .3s}
+.qi::after{transform:rotate(90deg)}
+.qa.open .qi{transform:rotate(45deg);background:var(--yellow);border-color:var(--yellow)}
+.qa.open .qi::before,.qa.open .qi::after{background:#1a1450}
+.qa-panel{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .45s var(--ease),visibility 0s .45s}
+.qa.open .qa-panel{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .45s var(--ease),visibility 0s}
+.qa-in{min-height:0;overflow:hidden}
+.qa-body{padding:0 18px 20px;font-size:15.5px;line-height:1.7;color:rgba(255,255,255,.72)}
+@media(max-width:1000px){
+  .faq-grid,.faq-rev .faq-grid{grid-template-columns:minmax(0,1fr);gap:30px}
+  .faq-rev .faq-intro{order:0}
+  .js-inercia{max-height:68vh}
+}
+@media(max-width:560px){.q{padding:15px 14px;font-size:15px}.qa-body{padding:0 14px 18px;font-size:15px}}
 </style>
 </head>
 <body style="background:#03031c;color:#fff">
@@ -981,19 +1023,80 @@ footer{background:#02021a;border-top:1px solid rgba(255,255,255,.07)}
   </div>
 </section>
 
-<!-- ================= FAQ ================= -->
-<section class="light pad" id="duvidas">
+<!-- ================= DÚVIDAS · ENERGIA SOLAR ================= -->
+<section class="light pad faq-sec" id="duvidas">
   <div class="wrap">
-    <span class="eyebrow reveal">Dúvidas frequentes <small>respostas rápidas</small></span>
-    <h2 class="sec-h reveal" style="--d:.08s">Respostas <em>rápidas</em> antes de começar.</h2>
-    <div class="faq">
-      <details class="reveal"><summary>Funciona em dia nublado ou à noite?</summary><p>Em dia nublado o sistema ainda gera, só que menos. À noite, você usa a energia da rede e paga com os créditos que o sistema acumulou durante o dia.</p></details>
-      <details class="reveal"><summary>E se faltar energia da rede?</summary><p>Por segurança, os sistemas ligados à rede desligam junto com ela e voltam sozinhos quando a energia retorna. Se você precisa de energia durante as quedas, fale com a gente sobre opções com bateria.</p></details>
-      <details class="reveal"><summary>Em quanto tempo o investimento se paga?</summary><p>Depende do seu consumo e do tamanho do sistema. O simulador mostra uma estimativa, e na proposta detalhamos o retorno com base na sua fatura real.</p></details>
-      <details class="reveal"><summary>A bomba solar precisa de energia da rede ou diesel?</summary><p>Não. Ela funciona com a energia dos próprios painéis, o que elimina o gasto com diesel e reduz a manutenção. É ideal para poços e áreas sem rede elétrica.</p></details>
-      <details class="reveal"><summary>Vocês cuidam da burocracia com a distribuidora?</summary><p>Sim. Fazemos o projeto, a solicitação de acesso e o acompanhamento até o sistema estar liberado para operar.</p></details>
-      <details class="reveal"><summary>Atendem fora de Mortugaba?</summary><p>Atendemos Mortugaba e cidades da região. Informe seu endereço no formulário e confirmamos a viabilidade.</p></details>
-      <details class="reveal"><summary>Precisa de manutenção?</summary><p>Muito pouca. Basicamente limpeza dos painéis de tempos em tempos e uma revisão preventiva, que a CD Solar também faz.</p></details>
+    <div class="faq-grid">
+      <div class="faq-intro">
+        <span class="faq-ico reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15 6 5h12l3 10z"/><path d="M12 5v10M4.5 10h15M2 19h20"/></svg></span>
+        <span class="eyebrow reveal">Dúvidas frequentes <small>Energia Solar</small></span>
+        <h2 class="sec-h reveal" style="--d:.08s">Energia <em>Solar</em> sem segredos.</h2>
+        <p class="sec-p reveal" style="--d:.14s">Residencial, comercial e rural: o que você precisa saber antes de instalar, da burocracia com a Coelba ao retorno do investimento.</p>
+        <a class="btn btn-ghost btn-wa reveal" style="--d:.2s" href="#" data-wa="Olá! Tenho uma dúvida sobre energia solar."><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg> Tirar dúvida no WhatsApp</a>
+      </div>
+      <div class="faq-box reveal" style="--d:.1s">
+        <div class="js-inercia" style="--h:340px" role="group" aria-label="Perguntas sobre energia solar">
+          <div class="trilho">
+            <article class="qa" id="duvida-burocracia">
+              <h3><button type="button" class="q" aria-expanded="false" aria-controls="resp-burocracia" id="perg-burocracia"><span class="qt">Vocês cuidam de toda a burocracia com a Neoenergia Coelba?</span><span class="qi" aria-hidden="true"></span></button></h3>
+              <div class="qa-panel" id="resp-burocracia" role="region" aria-labelledby="perg-burocracia"><div class="qa-in"><div class="qa-body"><p>Sim. Nossa equipe de engenharia elabora o projeto técnico, emite a ART (Anotação de Responsabilidade Técnica) e cuida de todo o processo de homologação e troca do relógio junto à Coelba, sem dor de cabeça para você.</p></div></div></div>
+            </article>
+            <article class="qa" id="duvida-retorno">
+              <h3><button type="button" class="q" aria-expanded="false" aria-controls="resp-retorno" id="perg-retorno"><span class="qt">Em quanto tempo o investimento se paga?</span><span class="qi" aria-hidden="true"></span></button></h3>
+              <div class="qa-panel" id="resp-retorno" role="region" aria-labelledby="perg-retorno"><div class="qa-in"><div class="qa-body"><p>Na nossa região, devido ao alto índice de irradiação solar, o retorno do investimento (payback) acontece em média entre 2,5 e 4 anos. Como os painéis têm vida útil superior a 25 anos, você garante décadas de energia praticamente gratuita após esse período.</p></div></div></div>
+            </article>
+            <article class="qa" id="duvida-nublado">
+              <h3><button type="button" class="q" aria-expanded="false" aria-controls="resp-nublado" id="perg-nublado"><span class="qt">Funciona em dia nublado ou à noite?</span><span class="qi" aria-hidden="true"></span></button></h3>
+              <div class="qa-panel" id="resp-nublado" role="region" aria-labelledby="perg-nublado"><div class="qa-in"><div class="qa-body"><p>Em dias nublados, os painéis continuam gerando energia normalmente, apenas em ritmo menor. À noite, você consome a energia da rede da distribuidora usando os créditos acumulados durante o dia, mantendo sua economia de até 95% na fatura.</p></div></div></div>
+            </article>
+            <article class="qa" id="duvida-falta-energia">
+              <h3><button type="button" class="q" aria-expanded="false" aria-controls="resp-falta-energia" id="perg-falta-energia"><span class="qt">E se faltar energia da rede da rua?</span><span class="qi" aria-hidden="true"></span></button></h3>
+              <div class="qa-panel" id="resp-falta-energia" role="region" aria-labelledby="perg-falta-energia"><div class="qa-in"><div class="qa-body"><p>Por norma de segurança da concessionária, sistemas conectados à rede (On-Grid) desligam automaticamente durante quedas de energia para proteger os técnicos que fazem manutenção nos postes. Se você precisa de autonomia total mesmo sem luz na rua, também projetamos sistemas híbridos com baterias.</p></div></div></div>
+            </article>
+            <article class="qa" id="duvida-regiao-manutencao">
+              <h3><button type="button" class="q" aria-expanded="false" aria-controls="resp-regiao-manutencao" id="perg-regiao-manutencao"><span class="qt">Atendem fora de Mortugaba-BA? Como funciona a manutenção?</span><span class="qi" aria-hidden="true"></span></button></h3>
+              <div class="qa-panel" id="resp-regiao-manutencao" role="region" aria-labelledby="perg-regiao-manutencao"><div class="qa-in"><div class="qa-body"><p>Atendemos Mortugaba e toda a região circunvizinha (sudoeste da Bahia e norte de Minas). Os sistemas exigem manutenção mínima — basicamente a limpeza periódica das placas com água para tirar a poeira — e você conta com nossa equipe técnica local para qualquer suporte ou garantia.</p></div></div></div>
+            </article>
+          </div>
+          <span class="inercia-barra" aria-hidden="true"><i></i></span>
+        </div>
+        <p class="inercia-dica" aria-hidden="true"><span>5 perguntas</span><span class="dica-rolar">role dentro da caixa para ver mais</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DÚVIDAS · BOMBAS SOLARES ================= -->
+<section class="light pad faq-sec faq-rev" id="duvidas-bombas">
+  <div class="wrap">
+    <div class="faq-grid">
+      <div class="faq-intro">
+        <span class="faq-ico reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/><path d="M9.5 14.5a2.7 2.7 0 0 0 2.5 2.5"/></svg></span>
+        <span class="eyebrow reveal">Dúvidas frequentes <small>Bombas Solares</small></span>
+        <h2 class="sec-h reveal" style="--d:.08s">Bombas <em>Solares</em> para poço e irrigação.</h2>
+        <p class="sec-p reveal" style="--d:.14s">Água do poço artesiano, da cisterna ou do açude sem diesel e sem depender da rede elétrica.</p>
+        <a class="btn btn-ghost btn-wa reveal" style="--d:.2s" href="#" data-wa="Olá! Tenho uma dúvida sobre bomba solar."><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg> Tirar dúvida no WhatsApp</a>
+      </div>
+      <div class="faq-box reveal" style="--d:.1s">
+        <div class="js-inercia" style="--h:300px" role="group" aria-label="Perguntas sobre bombas solares">
+          <div class="trilho">
+            <article class="qa" id="duvida-bomba-rede">
+              <h3><button type="button" class="q" aria-expanded="false" aria-controls="resp-bomba-rede" id="perg-bomba-rede"><span class="qt">A bomba solar precisa de energia da rede ou gerador a diesel?</span><span class="qi" aria-hidden="true"></span></button></h3>
+              <div class="qa-panel" id="resp-bomba-rede" role="region" aria-labelledby="perg-bomba-rede"><div class="qa-in"><div class="qa-body"><p>Não. A bomba solar funciona de forma 100% autônoma (Off-Grid), ligada diretamente aos painéis solares. É a solução ideal para propriedades rurais, fazendas e poços artesianos onde a rede elétrica não chega ou o custo com diesel e conta rural pesa no bolso.</p></div></div></div>
+            </article>
+            <article class="qa" id="duvida-bomba-noite">
+              <h3><button type="button" class="q" aria-expanded="false" aria-controls="resp-bomba-noite" id="perg-bomba-noite"><span class="qt">Como funciona o bombeamento de água à noite ou em dias fechados?</span><span class="qi" aria-hidden="true"></span></button></h3>
+              <div class="qa-panel" id="resp-bomba-noite" role="region" aria-labelledby="perg-bomba-noite"><div class="qa-in"><div class="qa-body"><p>Diferente dos sistemas residenciais, o armazenamento da bomba solar é feito na própria caixa d&#x27;água ou reservatório. Durante as horas de sol, a bomba enche o reservatório com alta vazão para que você tenha água disponível à noite e em dias nublados sem precisar gastar com baterias caras.</p></div></div></div>
+            </article>
+            <article class="qa" id="duvida-bomba-dimensiona">
+              <h3><button type="button" class="q" aria-expanded="false" aria-controls="resp-bomba-dimensiona" id="perg-bomba-dimensiona"><span class="qt">Vocês dimensionam a bomba para o meu poço específico?</span><span class="qi" aria-hidden="true"></span></button></h3>
+              <div class="qa-panel" id="resp-bomba-dimensiona" role="region" aria-labelledby="perg-bomba-dimensiona"><div class="qa-in"><div class="qa-body"><p>Sim. Não vendemos kits genéricos. Calculamos a vazão do seu poço, a profundidade (altura manométrica) e a necessidade diária de litros da sua propriedade para entregar a bomba e o conjunto de placas na medida exata.</p></div></div></div>
+            </article>
+          </div>
+          <span class="inercia-barra" aria-hidden="true"><i></i></span>
+        </div>
+        <p class="inercia-dica" aria-hidden="true"><span>3 perguntas</span><span class="dica-rolar">role dentro da caixa para ver mais</span></p>
+      </div>
     </div>
   </div>
 </section>
@@ -1639,6 +1742,89 @@ footer{background:#02021a;border-top:1px solid rgba(255,255,255,.07)}
   })();
 
   updQuick(); update();
+})();
+</script>
+
+<script>
+/* DÚVIDAS: rolagem com inércia (o conteúdo persegue a rolagem em vez de saltar).
+   Adaptado da animação "Rolagem com inércia": laço contínuo (requestAnimationFrame) que só roda
+   enquanto a caixa está na tela. A página só é "segurada" quando há mais conteúdo para rolar
+   dentro da caixa; nas pontas a rolagem volta para a página. */
+(function(){
+  var lerp=function(a,b,t){return a+(b-a)*t};
+  var limitar=function(v,min,max){return Math.max(min,Math.min(max,v))};
+  var reduz=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  /* laço de animação que só roda enquanto o elemento está visível */
+  function laco(card,passo){
+    var id=null,vivo=false,respondeu=false;
+    function rodar(){passo();id=requestAnimationFrame(rodar)}
+    function ligar(){if(!vivo){vivo=true;rodar()}}
+    function desligar(){if(vivo){vivo=false;cancelAnimationFrame(id)}}
+    var obs=new IntersectionObserver(function(e){respondeu=true;e[0].isIntersecting?ligar():desligar()},{threshold:0});
+    obs.observe(card);
+    var espera=setTimeout(function(){if(!respondeu)ligar()},1500);   /* se o observador não responder, começa assim mesmo */
+    return function(){clearTimeout(espera);cancelAnimationFrame(id);obs.disconnect()};
+  }
+
+  function inercia(caixa){
+    var trilho=caixa.querySelector(".trilho"), barra=caixa.querySelector(".inercia-barra i"), box=caixa.parentNode;
+    var alvo=0, atual=0, ultimoToque=null, rolando=false;
+    var max=function(){return Math.max(0,trilho.scrollHeight-caixa.clientHeight)};
+    var ptoque=function(e){return e.touches&&e.touches[0]?e.touches[0].clientY:null};
+
+    function consome(dy){                                  /* true = a caixa usou o movimento */
+      var m=max(); if(m<=1) return false;
+      if((alvo<=0&&dy<0)||(alvo>=m&&dy>0)) return false;   /* nas pontas, deixa a página rolar */
+      alvo=limitar(alvo+dy,0,m); return true;
+    }
+    caixa.addEventListener("wheel",function(ev){
+      if(ev.ctrlKey) return;
+      var dy=ev.deltaMode===1?ev.deltaY*16:ev.deltaMode===2?ev.deltaY*caixa.clientHeight:ev.deltaY;
+      if(consome(dy)) ev.preventDefault();
+    },{passive:false});
+    caixa.addEventListener("touchstart",function(e){ultimoToque=ptoque(e)},{passive:true});
+    caixa.addEventListener("touchmove",function(e){
+      var y=ptoque(e); if(y==null||ultimoToque==null) return;
+      var dy=ultimoToque-y; ultimoToque=y;
+      if(consome(dy)&&e.cancelable) e.preventDefault();
+    },{passive:false});
+
+    /* mantém o item em foco (teclado) e a pergunta aberta sempre à vista */
+    function trazer(el,altura){
+      var topo=el.getBoundingClientRect().top-caixa.getBoundingClientRect().top+atual, h=altura||el.offsetHeight, H=caixa.clientHeight;
+      if(topo<alvo+10) alvo=topo-14;
+      else if(topo+h>alvo+H-10) alvo=Math.min(topo-14,topo+h-H+14);
+      alvo=limitar(alvo,0,max());
+    }
+    caixa.addEventListener("focusin",function(e){var qa=e.target.closest(".qa"); if(qa) trazer(qa)});
+    caixa.addEventListener("scroll",function(){caixa.scrollTop=0;caixa.scrollLeft=0});   /* o foco do navegador não desloca a caixa */
+    caixa.addEventListener("click",function(e){
+      var b=e.target.closest(".q"); if(!b) return;
+      var qa=b.closest(".qa"), abrir=!qa.classList.contains("open");
+      qa.classList.toggle("open",abrir); b.setAttribute("aria-expanded",String(abrir));
+      if(abrir){ var corpo=qa.querySelector(".qa-body"); trazer(qa,b.offsetHeight+corpo.scrollHeight) }
+    });
+
+    return laco(caixa,function(){
+      var m=max(); alvo=limitar(alvo,0,m);
+      atual=reduz?alvo:lerp(atual,alvo,.1);                /* quanto menor o número, mais escorrega */
+      if(Math.abs(alvo-atual)<.05) atual=alvo;
+      trilho.style.transform="translate3d(0,"+(-atual).toFixed(2)+"px,0)";
+      var tem=m>1; if(tem!==rolando){rolando=tem;caixa.classList.toggle("rola",tem);box.classList.toggle("rola",tem)}
+      if(tem){
+        var H=caixa.clientHeight-28, th=Math.max(36,H*caixa.clientHeight/trilho.scrollHeight);
+        barra.style.height=th+"px"; barra.style.transform="translateY("+((H-th)*(atual/m)).toFixed(1)+"px)";
+        caixa.style.setProperty("--ft",Math.min(atual,26).toFixed(1)+"px");
+        caixa.style.setProperty("--fb",Math.min(m-atual,26).toFixed(1)+"px");
+      }else{caixa.style.setProperty("--ft","0px");caixa.style.setProperty("--fb","0px")}
+    });
+  }
+  [].slice.call(document.querySelectorAll(".js-inercia")).forEach(inercia);
+
+  /* menu: "Dúvidas" fica ativo também na seção de bombas solares */
+  var sb=document.getElementById("duvidas-bombas"), lk=document.querySelector('#nav a[href="#duvidas"]');
+  if(sb&&lk){ new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){[].forEach.call(document.querySelectorAll("#nav a"),function(a){a.classList.toggle("on",a===lk)})} })},{rootMargin:"-45% 0px -50% 0px"}).observe(sb) }
 })();
 </script>
 </body>
